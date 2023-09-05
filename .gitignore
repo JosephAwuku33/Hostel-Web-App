@@ -1,2 +1,25 @@
+# Node.js specific files and directories
+node_modules/
+package-lock.json
+npm-debug.log
+
+# Log files
+logs/
+*.log
+
+# Environment variables
 .env
-node_modules
+
+# Visual Studio Code settings
+.vscode/
+
+# Mac OS specific files
+.DS_Store
+
+# Editor/IDE configuration files
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
