@@ -5,7 +5,7 @@ const MONGO_URL = process.env.MONGO_URL;
 export const connectDB = () => {
     mongoose
     .connect(MONGO_URL, {
-       autoIndex: true
+      autoIndex: false
     })
     .then(() => {
       console.log("Successfully connected to database");

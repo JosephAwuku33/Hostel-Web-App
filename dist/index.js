@@ -12,29 +12,28 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import bodyParser from "body-parser";
+import { addtoDB } from "./api/data/seededData/fillRooms.js";
 const API_PORT = process.env.API_PORT || 4000;
 const app = express();
 const httpServer = http.createServer(app);
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    //csrfPrevention: false,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 await server.start();
 connectDB();
 const corsOptions = {
-    origin: '*',
-    methods: ['GET,HEAD,PUT,PATCH,POST,DELETE'],
+    origin: "*",
+    methods: ["GET,HEAD,PUT,PATCH, POST,DELETE"],
     credentials: true, // Enable cookies and other credentials in CORS requests
 };
-//app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/api", cors(corsOptions), bodyParser.json(), expressMiddleware(server, {
     context: async ({ req }) => {
         var _a;
         // Get the user token from the headers.
-        const token = ((_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1]) || "";
+        const token = ((_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) || "";
         // Try to retrieve a user with the token
         const user = await getUser(token);
         console.log(user === null || user === void 0 ? void 0 : user.first_name);
@@ -56,3 +55,4 @@ app.use("/api", cors(corsOptions), bodyParser.json(), expressMiddleware(server, 
 app.use("/users", userRouter);
 await new Promise((resolve) => httpServer.listen({ port: API_PORT }, resolve));
 console.log(`🚀 Server ready at http://localhost:4000/api/`);
+addtoDB();

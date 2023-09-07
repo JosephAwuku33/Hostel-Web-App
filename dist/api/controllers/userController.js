@@ -5,7 +5,7 @@ import User from "../data/models/User.js";
 import bcrypt from 'bcryptjs';
 import { generateToken } from "../util/generateToken.js";
 // @desc    Register new user
-// @route   POST /api/users/signup
+// @route   POST /users/signup
 // @access  Public
 const registerUser = async (req, res) => {
     try {
@@ -48,7 +48,7 @@ const registerUser = async (req, res) => {
     }
 };
 // @desc    Authenticate a user
-// @route   POST /api/users/login
+// @route   POST /users/login
 // @access  Public
 const loginUser = async (req, res) => {
     try {
@@ -72,7 +72,7 @@ const loginUser = async (req, res) => {
     }
 };
 // @desc    Get user data
-// @route   GET /api/users/me
+// @route   GET /users/me
 // @access  Private
 const getMe = (req, res) => {
     res.status(200).json(req.body.user);
