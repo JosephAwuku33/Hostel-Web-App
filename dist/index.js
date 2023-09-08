@@ -12,7 +12,7 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { addtoDB } from "./api/data/seededData/fillRooms.js";
+//import { addtoDB } from "./api/data/seededData/fillRooms.js";
 const API_PORT = process.env.API_PORT || 4000;
 const app = express();
 const httpServer = http.createServer(app);
@@ -55,4 +55,4 @@ app.use("/api", cors(corsOptions), bodyParser.json(), expressMiddleware(server, 
 app.use("/users", userRouter);
 await new Promise((resolve) => httpServer.listen({ port: API_PORT }, resolve));
 console.log(`🚀 Server ready at http://localhost:4000/api/`);
-addtoDB();
+//addtoDB();
