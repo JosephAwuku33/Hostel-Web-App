@@ -1,23 +1,20 @@
 export const typeDefs = `#graphql
-type Hostel {
+type Rooms {
     id: ID!
-    name: String!
-    description: String
+    number: Int
+    status: String
+    type: String
+    occupants: Int
+    price: Float
+    gender_type: String
     # Add more fields as needed
   }
 
   type Query {
-    hostels: [Hostel]
+    rooms: [Rooms]
     # Define more queries here
+
+    
   }
 
-  type Mutation {
-    createHostel(input: HostelInput): Hostel 
-  }
-
-  input HostelInput {
-    id: ID!
-    name: String!,
-    description: String!,
-  }
 `;
