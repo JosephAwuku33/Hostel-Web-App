@@ -1,4 +1,14 @@
-export const roomsData = [
+interface roomsData {
+  number: number;
+  status: string;
+  type: string;
+  occupants: number;
+  price: number;
+  gender_type: string;
+}
+
+
+export const roomsData: roomsData[] = [
   {
     number: 3,
     status: "available",
