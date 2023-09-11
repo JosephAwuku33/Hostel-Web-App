@@ -13,6 +13,9 @@ type Rooms {
   type Query {
     rooms: [Rooms]
     # Define more queries here
+
+    
+    
   }
-  
+
 `;

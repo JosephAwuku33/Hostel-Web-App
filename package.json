@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "compile": "tsc",
-    "start": "npm run compile && nodemon ./dist/index.js",
+    "start_backend": "npm run compile && nodemon ./dist/index.js",
+    "start_frontend": "cd frontend && npm run dev",
+    "start_both":"concurrently \"npm run start_backend\" \"npm run start_frontend\"",
+    "dev": "concurrently \"npm run start_backend\" \"cd frontend && npm run dev\"",
     "lint": "eslint . --ext .ts"
   },
   "keywords": [],
@@ -17,6 +20,7 @@
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/node": "^20.5.7",
+    "concurrently": "^8.2.1",
     "nodemon": "^3.0.1",
     "typescript": "^5.2.2"
   },

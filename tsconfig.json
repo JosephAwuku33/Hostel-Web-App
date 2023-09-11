@@ -111,4 +111,5 @@
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
     "typeRoots": ["types/env.d.ts", "node_modules/@types"]
   },
+  "exclude": ["frontend"]
 }
