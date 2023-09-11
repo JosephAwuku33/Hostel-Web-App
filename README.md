@@ -12,3 +12,5 @@ The project seeks to build the backend for a hostel management's platform
 
 **Server:** Node, Express, Apollo Server v4, GraphQL 
 
+**Client** React with Vite, Redux, Apollo Client
+
