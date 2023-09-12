@@ -1,11 +1,11 @@
-import axios from 'axios';
+import axios from "axios";
 
 export interface UserData {
   // Define the structure of your user data here
   // For example:
   first_name?: string;
-  last_name?:string;
-  email:string;
+  last_name?: string;
+  email: string;
   password: string;
 }
 
@@ -21,45 +21,53 @@ export interface ApiResponse {
   };
 }
 
-const API_URL: string = '/users/';
+const API_URL: string = "http://localhost:4000/users/";
 
 // Register user
 const register = async (userData: UserData): Promise<ApiResponse | null> => {
   try {
-    const response = await axios.post<ApiResponse>(API_URL, userData);
+    const response = await axios.post(
+      "http://localhost:4000/users/signup",
+      userData
+    );
+
+    console.log(response);
 
     if (response.data) {
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      localStorage.setItem("user", JSON.stringify(response.data.user));
     }
 
     return response.data || null;
   } catch (error) {
     // Handle errors here
-    console.error('Error registering user:', error);
+    console.log("Error registering user:", error);
     return null;
   }
 };
 
 // Login user
-const login = async (userData: UserData) : Promise<ApiResponse | null> => {
+const login = async (userData: UserData): Promise<ApiResponse | null> => {
   try {
-    const response = await axios.post<ApiResponse>(API_URL + 'login', userData);
+    const response = await axios.post<ApiResponse>(
+      API_URL + "login",
+      userData
+    );
 
     if (response.data) {
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      localStorage.setItem("user", JSON.stringify(response.data.user));
     }
 
     return response.data || null;
   } catch (error) {
     // Handle errors here
-    console.error('Error logging in user:', error);
+    console.error("Error logging in user:", error);
     return null;
   }
 };
 
 // Logout user
 const logout = (): void => {
-  localStorage.removeItem('user');
+  localStorage.removeItem("user");
 };
 
 const authService = {

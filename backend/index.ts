@@ -16,8 +16,16 @@ import bodyParser from "body-parser";
 //import { addtoDB } from "./api/data/seededData/fillRooms.js";
 
 const API_PORT = process.env.API_PORT || 4000;
+const LOCALHOST = process.env.CLIENT_URL;
+
+const corsOptions = {
+  origin: LOCALHOST, // Replace with your allowed origin(s)
+  methods: ["GET,HEAD,PUT,PATCH, POST,DELETE"],
+  credentials: true, // Enable cookies and other credentials in CORS requests
+};
 
 const app = express();
+// app.use(cors(corsOptions));
 
 const httpServer = http.createServer(app);
 
@@ -30,13 +38,14 @@ const server = new ApolloServer<MyContext>({
 await server.start();
 connectDB();
 
-const corsOptions = {
-  origin: "*", // Replace with your allowed origin(s)
-  methods: ["GET,HEAD,PUT,PATCH, POST,DELETE"],
-  credentials: true, // Enable cookies and other credentials in CORS requests
-};
-
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.urlencoded({ extended: false }));
+app.use(
+  "/users",
+  bodyParser.json(),
+  cors(corsOptions),
+  express.urlencoded({ extended: false }),
+  userRouter
+);
 
 app.use(
   "/api",
@@ -69,8 +78,6 @@ app.use(
     },
   })
 );
-
-app.use("/users", userRouter);
 
 await new Promise<void>((resolve) =>
   httpServer.listen({ port: API_PORT }, resolve)

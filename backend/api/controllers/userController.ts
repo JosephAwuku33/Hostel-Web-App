@@ -16,9 +16,10 @@ const registerUser = async (req: Request, res: Response) => {
     const { first_name, last_name, email, password } = req.body;
 
     // Validate user input
-    if (!(email && password && first_name && last_name)) {
-      res.status(400).send("All input is required");
-    }
+    if (!first_name || !last_name ||  !email || !password) {
+        res.status(400)
+        throw new Error('Please add all fields');
+      }
 
 
     // check if user already exists
@@ -26,7 +27,7 @@ const registerUser = async (req: Request, res: Response) => {
     const oldUser = await User.findOne({ email });
 
     if ( oldUser) {
-        return res.status(409).send("User Already Exist. Please ");
+        return res.status(409).send("User already exists");
     }
 
     // Hash password
@@ -47,11 +48,14 @@ const registerUser = async (req: Request, res: Response) => {
             last_name: user.last_name,
             email: user.email,
             token: generateToken(user._id)
-        })
+        });
     } else {
-        res.status(400).send("Invalid User data");
+        res.status(400);
+        throw new Error('Invalid user data');
     }
     
+    console.log("This is the response");
+    console.log(res);
   } catch (err) {
     res.send(`E make beans: ${err}`);
   }

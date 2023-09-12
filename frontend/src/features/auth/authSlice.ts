@@ -25,7 +25,7 @@ const initialState: AuthState = {
 
 // Async Thunks
 export const register = createAsyncThunk(
-  'auth/register',
+  'auth/signup',
   async (user: UserData, thunkAPI) => {
     try {
       const response = await authService.register(user);

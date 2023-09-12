@@ -1,8 +1,83 @@
 //import React from 'react'
+import { useState, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import Spinner from "../components/Spinner";
+
+import { register, reset } from "../features/auth/authSlice";
 
 export default function SignUp() {
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    password2: "",
+  });
+
+  const { first_name, last_name, email, password, password2 } = formData;
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+
+  const { user, isLoading, isError, isSuccess, message } = useAppSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+      <ToastContainer/>
+    }
+
+    if (isSuccess || user) {
+      
+      navigate('/home');
+    }
+
+    dispatch(reset())
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onChange = (e: { target: { name: any; value: any; }; }) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }))
+  };
+
+  const onSubmit = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+
+    try {
+      if (password !== password2) {
+        toast.error('Passwords do not match');
+        <ToastContainer />
+        return null;
+      } else {
+        const userData = {
+          first_name,
+          last_name,
+          email,
+          password,
+        };
+  
+        dispatch(register(userData));
+      }
+    } catch ( err ){
+      console.error(err);
+    }
+  }
+
+  
+
+
   return (
+    
     <>
+      <Spinner loading={isLoading} />
       <section className="h-screen bg-slate-100">
         <div className="container h-full px-6 py-24">
           <div className="gap-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
@@ -17,8 +92,8 @@ export default function SignUp() {
 
             {/**<!-- Right column container with form --> */}
             <div className="md:w-8/12 lg:ml-6 lg:w-5/12">
-              <form className="space-y-6">
-              <div>
+              <form className="space-y-6" onSubmit={onSubmit}>
+                <div>
                   <label
                     htmlFor="first_name"
                     className="block text-sm font-medium leading-6 text-gray-900"
@@ -29,7 +104,9 @@ export default function SignUp() {
                     <input
                       name="first_name"
                       type="text"
+                      value={first_name}
                       required
+                      onChange={onChange}
                       className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -45,8 +122,10 @@ export default function SignUp() {
                   <div className="mt-2">
                     <input
                       name="last_name"
+                      value={last_name}
                       type="text"
                       required
+                      onChange={onChange}
                       className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -61,9 +140,10 @@ export default function SignUp() {
                   </label>
                   <div className="mt-2">
                     <input
-                      id="email"
                       name="email"
                       type="email"
+                      value={email}
+                      onChange={onChange}
                       autoComplete="email"
                       required
                       className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -79,6 +159,7 @@ export default function SignUp() {
                     >
                       Password
                     </label>
+                    {/*
                     <div className="text-sm">
                       <a
                         href="#"
@@ -86,13 +167,49 @@ export default function SignUp() {
                       >
                         Forgot password?
                       </a>
+  
                     </div>
+  */}
                   </div>
                   <div className="mt-2">
                     <input
-                      id="password"
                       name="password"
                       type="password"
+                      value={password}
+                      onChange={onChange}
+                      autoComplete="current-password"
+                      required
+                      className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between">
+                    <label
+                      htmlFor="password2"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Password
+                    </label>
+                    {/*
+                    <div className="text-sm">
+                      <a
+                        href="#"
+                        className="font-semibold text-indigo-600 hover:text-indigo-500"
+                      >
+                        Forgot password?
+                      </a>
+  
+                    </div>
+  */}
+                  </div>
+                  <div className="mt-2">
+                    <input
+                      name="password2"
+                      value={password2}
+                      type="password"
+                      onChange={onChange}
                       autoComplete="current-password"
                       required
                       className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
