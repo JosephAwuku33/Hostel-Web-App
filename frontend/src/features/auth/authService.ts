@@ -34,7 +34,7 @@ const register = async (userData: UserData): Promise<ApiResponse | null> => {
     console.log(response);
 
     if (response.data) {
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("user", JSON.stringify(response.data));
     }
 
     return response.data || null;
@@ -48,13 +48,13 @@ const register = async (userData: UserData): Promise<ApiResponse | null> => {
 // Login user
 const login = async (userData: UserData): Promise<ApiResponse | null> => {
   try {
-    const response = await axios.post<ApiResponse>(
+    const response = await axios.post(
       API_URL + "login",
       userData
     );
 
     if (response.data) {
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("user", JSON.stringify(response.data));
     }
 
     return response.data || null;

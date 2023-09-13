@@ -54,8 +54,6 @@ const registerUser = async (req: Request, res: Response) => {
         throw new Error('Invalid user data');
     }
     
-    console.log("This is the response");
-    console.log(res);
   } catch (err) {
     res.send(`E make beans: ${err}`);
   }

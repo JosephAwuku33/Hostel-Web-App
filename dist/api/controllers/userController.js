@@ -11,8 +11,6 @@ const registerUser = async (req, res) => {
     try {
         //retrieve the input
         const { first_name, last_name, email, password } = req.body;
-        console.log("This is the request body:");
-        console.log(req.body);
         // Validate user input
         if (!first_name || !last_name || !email || !password) {
             res.status(400);
@@ -22,8 +20,7 @@ const registerUser = async (req, res) => {
         // Validate if user exist in our database
         const oldUser = await User.findOne({ email });
         if (oldUser) {
-            return res.status(409);
-            throw new Error("User already exists");
+            return res.status(409).send("User already exists");
         }
         // Hash password
         const salt = await bcrypt.genSalt(10);
@@ -47,8 +44,6 @@ const registerUser = async (req, res) => {
             res.status(400);
             throw new Error('Invalid user data');
         }
-        console.log("This is the response");
-        console.log(res);
     }
     catch (err) {
         res.send(`E make beans: ${err}`);

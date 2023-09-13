@@ -12,7 +12,6 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import bodyParser from "body-parser";
-//import { addtoDB } from "./api/data/seededData/fillRooms.js";
 const API_PORT = process.env.API_PORT || 4000;
 const LOCALHOST = process.env.CLIENT_URL;
 const corsOptions = {
@@ -21,7 +20,6 @@ const corsOptions = {
     credentials: true, // Enable cookies and other credentials in CORS requests
 };
 const app = express();
-// app.use(cors(corsOptions));
 const httpServer = http.createServer(app);
 const server = new ApolloServer({
     typeDefs,
@@ -57,4 +55,3 @@ app.use("/api", cors(corsOptions), bodyParser.json(), expressMiddleware(server, 
 }));
 await new Promise((resolve) => httpServer.listen({ port: API_PORT }, resolve));
 console.log(`🚀 Server ready at http://localhost:4000/api/`);
-//addtoDB();

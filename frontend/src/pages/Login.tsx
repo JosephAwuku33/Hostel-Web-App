@@ -1,16 +1,75 @@
-// import React from "react";
+ import { useState, useEffect} from "react";
 import { Outlet, Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useNavigate } from "react-router-dom";
+import {  toast } from "react-toastify";
+import Spinner from "../components/Spinner";
+import { login, reset } from "../features/auth/authSlice.ts";
+
 
 export default function Login() {
-
   
-  const handleSubmit = () => {
-     
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  })
+
+  const { email, password } = formData;
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const { user, isLoading, isError, isSuccess, message } = useAppSelector(
+    (state) => state.auth
+  );
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onChange = (e: { target: { name: any; value: any; }; }) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }))
+  }
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message)
+    }
+
+    if (isSuccess || user) {
+      navigate('/home');
+    }
+
+    dispatch(reset())
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
+
+  const onSubmit = (e: { preventDefault: () => void; }) => {
+    e.preventDefault()
+
+    const userData = {
+      email,
+      password,
+    }
+
+    dispatch(login(userData))
+  }
+
+  const overrideProps = {
+    display: "block",
+    margin: "0 auto",
+    borderColor: "red",
   };
+
 
 
   return (
     <>
+      { isLoading ? (
+        <div className="flex items-center justify-center h-screen">
+          <Spinner loading={isLoading} override={overrideProps} size={30} />
+        </div>
+      ) : (
       <main className="flex h-screen flex-1 flex-col justify-center bg-slate-100 px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -24,7 +83,7 @@ export default function Login() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={onSubmit}>
             <div>
               <label
                 htmlFor="email"
@@ -34,7 +93,8 @@ export default function Login() {
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
+                  value={email}
+                  onChange={onChange}
                   name="email"
                   type="email"
                   autoComplete="email"
@@ -63,7 +123,8 @@ export default function Login() {
               </div>
               <div className="mt-2">
                 <input
-                  id="password"
+                  value={password}
+                  onChange={onChange}
                   name="password"
                   type="password"
                   autoComplete="current-password"
@@ -91,10 +152,11 @@ export default function Login() {
             >
               Register now
             </Link>
+            <Outlet/>
           </p>
         </div>
       </main>
-      <Outlet/>
+      )}
     </>
   );
 }
