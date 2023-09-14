@@ -1,4 +1,5 @@
 import { useQuery, gql } from "@apollo/client";
+import Spinner from "./Spinner";
 
 interface Rooms {
   id: string;
@@ -14,6 +15,12 @@ interface RoomsData {
 }
 
 export default function DisplayRooms() {
+  const overrideProps = {
+    display: "block",
+    margin: "0 auto",
+    borderColor: "red",
+  };
+
   const GET_ROOMS = gql`
     query Getrooms {
       rooms {
@@ -25,9 +32,11 @@ export default function DisplayRooms() {
     }
   `;
 
+
+
   const { loading, error, data } = useQuery<RoomsData>(GET_ROOMS);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner override={overrideProps} loading={loading}/>;
   if (error) return <p>Error : {error.message}</p>;
 
   return data?.rooms.map(({ id, number, price, occupants }) => {

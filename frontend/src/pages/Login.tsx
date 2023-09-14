@@ -34,7 +34,8 @@ export default function Login() {
 
   useEffect(() => {
     if (isError) {
-      toast.error(message)
+      toast.error(message);
+      navigate('/');
     }
 
     if (isSuccess || user) {
@@ -59,6 +60,7 @@ export default function Login() {
     display: "block",
     margin: "0 auto",
     borderColor: "red",
+    backgroundColor: "white",
   };
 
 
@@ -149,7 +151,7 @@ export default function Login() {
             <Link
               to="/signup"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-            >
+            > 
               Register now
             </Link>
             <Outlet/>
