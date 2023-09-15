@@ -28,7 +28,8 @@ export default function SignUp() {
   const dispatch = useAppDispatch();
 
   const { user, isLoading, isError, isSuccess, message } = useAppSelector(
-    (state) => state.auth
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (state: { auth: any; }) => state.auth
   );
 
   useEffect(() => {
@@ -81,7 +82,7 @@ export default function SignUp() {
           <Spinner loading={isLoading} override={overrideProps} size={30} />
         </div>
       ) : (
-        <section className="h-screen bg-slate-100">
+        <section className="h-full bg-slate-100 bg-second-background">
           <div className="container h-full px-6 py-24">
             <div className="gap-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
               {/* Left column container with background */}

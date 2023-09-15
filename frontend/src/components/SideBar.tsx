@@ -1,14 +1,29 @@
 // import React from "react";
-//import { useNavigate } from "react-router-dom";
-// import { useAppDispatch, useAppSelector } from "../app/hooks";
-// import { reset } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { logout, reset } from "../features/auth/authSlice";
+import { useEffect } from "react";
 
 export default function Sidebar() {
-    //const navigate = useNavigate();
-    
-    const handleLogout = () => {
 
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    
+    const { user } = useAppSelector((state) => state.auth);
+   
+    const handleLogout = () => {
+        dispatch(logout());
+        dispatch(reset());
     };
+
+    useEffect(() => {
+        if (!user){
+            navigate("/");
+        }
+
+   
+    }, [dispatch, user, navigate]);
 
 
     return (
@@ -43,8 +58,8 @@ export default function Sidebar() {
                                 </a>
                             </li>
                             <li className="rounded-sm">
-                                <a
-                                    href="#"
+                                <Link
+                                    to="/roomslist"
                                     className="flex items-center p-2 space-x-3 rounded-md"
                                 >
                                     <svg
@@ -61,8 +76,9 @@ export default function Sidebar() {
                                             d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
                                         />
                                     </svg>
-                                    <span>Inbox</span>
-                                </a>
+                                    <span>Rooms</span>
+                                </Link>
+                                
                             </li>
                             <li className="rounded-sm">
                                 <a
@@ -114,8 +130,7 @@ export default function Sidebar() {
                                 </a>
                             </li>
                             <li className="rounded-sm">
-                                <a
-                                    href="#"
+                                <button
                                     className="flex items-center p-2 space-x-3 rounded-md"
                                     onClick={handleLogout}
                                 >
@@ -134,15 +149,16 @@ export default function Sidebar() {
                                         />
                                     </svg>
                                     <span>Logout</span>
-                                </a>
+                                </button>
                             </li>
                         </ul>
                     </div>
                 </div>
+                <Outlet/>
             </div>
-            <div className="container mx-auto mt-12">
+            <div className="container mx-auto mt-12 p-3">
                 <div className="grid grid-cols-1 gap-6 mb-6 lg:grid-cols-3">
-                    <div className="w-full px-4 py-5 bg-white rounded-lg shadow">
+                    <div className="w-full px-4 py-5 bg-white rounded-lg shadow-xl">
                         <div className="text-sm font-medium text-gray-500 truncate">
                             Total users
                         </div>
@@ -150,7 +166,7 @@ export default function Sidebar() {
                             12,00
                         </div>
                     </div>
-                    <div className="w-full px-4 py-5 bg-white rounded-lg shadow">
+                    <div className="w-full px-4 py-5 bg-white rounded-lg shadow-xl">
                         <div className="text-sm font-medium text-gray-500 truncate">
                             Total Profit
                         </div>
@@ -158,7 +174,7 @@ export default function Sidebar() {
                             $ 450k
                         </div>
                     </div>
-                    <div className="w-full px-4 py-5 bg-white rounded-lg shadow">
+                    <div className="w-full px-4 py-5 bg-white rounded-lg shadow-xl">
                         <div className="text-sm font-medium text-gray-500 truncate">
                             Total Orders
                         </div>

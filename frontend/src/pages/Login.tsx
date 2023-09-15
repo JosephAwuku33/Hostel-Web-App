@@ -72,7 +72,7 @@ export default function Login() {
           <Spinner loading={isLoading} override={overrideProps} size={30} />
         </div>
       ) : (
-      <main className="flex h-screen flex-1 flex-col justify-center bg-slate-100 px-6 py-12 lg:px-8">
+      <main className="flex h-screen flex-1 flex-col justify-center bg-slate-100 bg-main-background px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-10 w-auto"
@@ -117,7 +117,7 @@ export default function Login() {
                 <div className="text-sm">
                   <a
                     href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
+                    className="font-semibold text-indigo-900 hover:text-green-900"
                   >
                     Forgot password?
                   </a>
@@ -139,18 +139,18 @@ export default function Login() {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-indigo-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Sign in
               </button>
             </div>
           </form>
 
-          <p className="mt-10 text-center text-sm text-gray-500">
+          <p className="mt-10 text-center text-sm text-gray-900">
             Not a member?{" "}
             <Link
               to="/signup"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+              className="font-semibold leading-6 text-indigo-900 hover:text-green-500"
             > 
               Register now
             </Link>

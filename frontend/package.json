@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "proxy":"http://localhost:4000/",
+  "proxy": "http://localhost:4000/",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -12,11 +12,16 @@
   },
   "dependencies": {
     "@apollo/client": "^3.8.3",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
+    "@mui/icons-material": "^5.14.9",
+    "@mui/material": "^5.14.9",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.5.0",
     "graphql": "^16.8.0",
+    "mui-datatables": "^4.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.2",
@@ -25,6 +30,7 @@
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
+    "@types/mui-datatables": "^4.3.5",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
