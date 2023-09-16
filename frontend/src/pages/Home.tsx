@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAppSelector } from "../app/hooks";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/SideBar";
+import SideBar from "../components/SideBar";
 
 export default function Home() {
   
@@ -18,7 +18,7 @@ export default function Home() {
 
   return (
   <>
-    <Sidebar/>
+    <SideBar/>
   </>
   );
 }

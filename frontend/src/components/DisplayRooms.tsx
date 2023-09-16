@@ -76,7 +76,6 @@ export default function DisplayRooms() {
       title={"Hostel Rooms"}
       data={transformedData}
       columns={columns}
-      //options={options}
     />
   );
 }

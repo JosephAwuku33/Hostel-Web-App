@@ -8,7 +8,7 @@ import "react-toastify/ReactToastify.css";
 
 function App() {
   return (
-    <>
+    <div className="font-primary">
       <BrowserRouter>
         <Routes>
           <Route index element={<Login />} />
@@ -18,7 +18,7 @@ function App() {
         </Routes>
       </BrowserRouter>
       <ToastContainer />
-    </>
+    </div>
   );
 }
 
