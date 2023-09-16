@@ -12,6 +12,7 @@ import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+
 const SideBar = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -42,9 +43,9 @@ const SideBar = () => {
           <MenuItem icon={<MenuOutlinedIcon />} onClick={toggleSidebar} style={{ textAlign: "left" }}>
             <h2>Admin</h2>
           </MenuItem>
-          <MenuItem icon={<HomeOutlinedIcon />} component={<Link to="/roomslist"/>}>Home</MenuItem>
-          <MenuItem icon={<PeopleOutlinedIcon />}>Team</MenuItem>
-          <MenuItem icon={<ContactsOutlinedIcon />}>Contacts</MenuItem>
+          <MenuItem icon={<HomeOutlinedIcon />} component={<Link to="/home"/>}>Home</MenuItem>
+          <MenuItem icon={<PeopleOutlinedIcon />} component={<Link to="/about"/>}>Team</MenuItem>
+          <MenuItem icon={<ContactsOutlinedIcon />} component={<Link to="/contact"/>}>Contacts</MenuItem>
           <MenuItem icon={<ReceiptOutlinedIcon />}>Profile</MenuItem>
           <MenuItem icon={<HelpOutlineOutlinedIcon />}>FAQ</MenuItem>
           <MenuItem icon={<LogoutOutlinedIcon  />} onClick={handleLogout}>Logout</MenuItem>
