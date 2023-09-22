@@ -46,7 +46,7 @@ const SideBar = () => {
           <MenuItem icon={<HomeOutlinedIcon />} component={<Link to="/home"/>}>Home</MenuItem>
           <MenuItem icon={<PeopleOutlinedIcon />} component={<Link to="/about"/>}>Team</MenuItem>
           <MenuItem icon={<ContactsOutlinedIcon />} component={<Link to="/contact"/>}>Contacts</MenuItem>
-          <MenuItem icon={<ReceiptOutlinedIcon />}>Profile</MenuItem>
+          <MenuItem icon={<ReceiptOutlinedIcon />} component={<Link to="/submit_payment"/>}>Payments</MenuItem>
           <MenuItem icon={<HelpOutlineOutlinedIcon />}>FAQ</MenuItem>
           <MenuItem icon={<LogoutOutlinedIcon  />} onClick={handleLogout}>Logout</MenuItem>
         </Menu>
