@@ -1,7 +1,7 @@
 import { useQuery, gql } from "@apollo/client";
 import Spinner from "./Spinner";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
   setData,
   setLoading,

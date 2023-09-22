@@ -6,7 +6,7 @@ import { ApolloClient, InMemoryCache, createHttpLink,  ApolloProvider } from "@a
 import { setContext } from "@apollo/client/link/context";
 import { URI } from "./config/configs.ts";
 import { Provider } from "react-redux";
-import { store } from "./app/store.ts";
+import { store } from "./redux/store.ts";
 
 
 const httpLink = createHttpLink({

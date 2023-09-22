@@ -1,5 +1,5 @@
 import { ComponentType, FC, useEffect } from "react";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../redux/hooks";
 import { useNavigate } from "react-router-dom";
 import SideBar from "../components/SideBar";
 

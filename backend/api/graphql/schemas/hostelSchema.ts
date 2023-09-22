@@ -15,7 +15,8 @@ type Rooms {
     # Define more queries here
 
     
-    
+
   }
+
 
 `;

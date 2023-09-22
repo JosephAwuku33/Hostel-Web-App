@@ -1,6 +1,6 @@
 //import React from 'react'
 import { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Spinner from "../components/Spinner";
