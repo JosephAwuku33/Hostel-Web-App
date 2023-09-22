@@ -8,7 +8,7 @@ interface SpinnerProps {
   override: CSSProperties;
 }
 
-const Spinner: FC<SpinnerProps> = ({ loading,  color, override }) => {
+const Spinner: FC<SpinnerProps> = ({ loading , color, override }) => {
   return (
     <>
       <ScaleLoader color={color}  loading={loading} cssOverride={override} />
