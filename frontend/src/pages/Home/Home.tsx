@@ -1,7 +1,7 @@
 import { ComponentType, FC, useEffect } from "react";
-import { useAppSelector } from "../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import { useNavigate } from "react-router-dom";
-import SideBar from "../components/SideBar";
+import SideBar from "../../components/SideBar";
 
 interface HomeLayoutProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,10 +21,10 @@ const Home: FC<HomeLayoutProps> = ({ component: Component, ...props }) => {
   }, [user, navigate]);
 
   return (
-    <main className="flex">
+    <main className="flex min-h-screen">
       <SideBar/>
 
-      <section className="w-full h-full">
+      <section className="w-full h-full min-h-screen">
         <Component {...props} />
       </section>
     </main>

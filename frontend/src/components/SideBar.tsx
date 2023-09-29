@@ -37,7 +37,7 @@ const SideBar = () => {
   }, [dispatch, user, navigate]);
 
   return (
-    <section className="flex min-h-screen">
+    <section className="flex max-h-screen min-h-full">
       <Sidebar backgroundColor="#CBC3E3" collapsed={collapsegimme}>
         <Menu>
           <MenuItem icon={<MenuOutlinedIcon />} onClick={toggleSidebar} style={{ textAlign: "left" }}>

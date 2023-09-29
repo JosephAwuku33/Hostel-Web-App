@@ -1,11 +1,11 @@
 //import React from 'react'
 import { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import Spinner from "../components/Spinner";
+import Spinner from "../../components/Spinner";
 
-import { register, reset } from "../features/auth/authSlice";
+import { register, reset } from "../../features/auth/authSlice";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({

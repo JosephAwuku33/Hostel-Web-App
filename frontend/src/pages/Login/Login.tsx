@@ -1,10 +1,10 @@
  import { useState, useEffect} from "react";
 import { Outlet, Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../redux/hooks.ts";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks.ts";
 import { useNavigate } from "react-router-dom";
 import {  toast } from "react-toastify";
-import Spinner from "../components/Spinner";
-import { login, reset } from "../features/auth/authSlice.ts";
+import Spinner from "../../components/Spinner.tsx";
+import { login, reset } from "../../features/auth/authSlice.ts";
 
 
 export default function Login() {
