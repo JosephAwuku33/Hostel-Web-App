@@ -56,7 +56,7 @@ app.use(
 
       // Try to retrieve a user with the token
       const user = await getUser(token);
-      console.log(user?.first_name);
+      // console.log(user?.first_name);
 
       // optionally block the user
       // we could also check user roles/permissions here
