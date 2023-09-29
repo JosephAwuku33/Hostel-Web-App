@@ -1,27 +1,25 @@
 import jwt from "jsonwebtoken";
 import User from "../data/models/User.js";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
-export const protect = async (req: Request, res: Response) => {
+export const protect = async (req: Request, res: Response, next: NextFunction) => {
   let token;
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
+  token = req.cookies.jwt;
+
+  if (token) {
     try {
-      // Get token from header
-      token = req.headers.authorization.split(" ")[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: string};
 
-      // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: string };
+      req.body.user = await User.findById(decoded.id).select('-password');
 
-      // Get user from the token
-      req.body.user = await User.findById(decoded.id).select("-password");
-
-    } catch (err) {
-        console.log(err);
-        res.status(401).send("Not authorized");
+      next();
+    } catch (error) {
+      console.error(error);
+      res.status(401);
+      throw new Error('Not authorized, token failed');
     }
-  }
-};
+  } else {
+    res.status(401);
+    throw new Error('Not authorized, no token');
+}};
