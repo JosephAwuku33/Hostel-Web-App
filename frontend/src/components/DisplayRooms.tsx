@@ -1,4 +1,5 @@
-import { useQuery, gql } from "@apollo/client";
+import { useQuery} from "@apollo/client";
+import { GET_ROOMS } from "../graphql/query";
 import Spinner from "./Spinner";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -11,19 +12,7 @@ import {
 import MUIDataTable from "mui-datatables";
 
 export default function DisplayRooms() {
-  const GET_ROOMS = gql`
-    query Getrooms {
-      rooms {
-        id
-        number
-        price
-        occupants
-        status
-        type
-        gender_type
-      }
-    }
-  `;
+ 
   const dispatch = useAppDispatch();
   const rooms = useAppSelector(selectRooms);
 
