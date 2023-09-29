@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks.ts";
 import { useNavigate } from "react-router-dom";
 import {  toast } from "react-toastify";
 import Spinner from "../../components/Spinner.tsx";
-import { login, reset } from "../../features/auth/authSlice.ts";
+import { login, reset } from "../../redux/auth/authSlice.ts";
 
 
 export default function Login() {

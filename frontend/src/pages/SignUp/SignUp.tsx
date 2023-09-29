@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Spinner from "../../components/Spinner";
 
-import { register, reset } from "../../features/auth/authSlice";
+import { register, reset } from "../../redux/auth/authSlice";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {  Link } from "react-router-dom";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { logout, reset } from "../features/auth/authSlice";
+import { logout, reset } from "../redux/auth/authSlice";
 import { useEffect, useState } from "react";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";

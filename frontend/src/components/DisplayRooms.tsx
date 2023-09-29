@@ -8,7 +8,7 @@ import {
   setLoading,
   setError,
   selectRooms,
-} from "../features/graph_info/roomSlice";
+} from "../redux/graph_info/roomSlice";
 import MUIDataTable from "mui-datatables";
 
 export default function DisplayRooms() {
