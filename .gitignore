@@ -23,3 +23,5 @@ logs/
 *.njsproj
 *.sln
 
+# Typescript compiled files
+dist/

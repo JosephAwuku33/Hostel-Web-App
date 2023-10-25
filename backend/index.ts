@@ -36,7 +36,7 @@ const server = new ApolloServer<MyContext>({
 await server.start();
 connectDB();
 
-// app.use(express.urlencoded({ extended: false }));
+
 app.use(
   "/users",
   bodyParser.json(),
