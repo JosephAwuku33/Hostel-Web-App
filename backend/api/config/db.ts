@@ -6,6 +6,7 @@ export const connectDB = () => {
     mongoose
     .connect(MONGO_URL, {
       autoIndex: false
+      
     })
     .then(() => {
       console.log("Successfully connected to database");
