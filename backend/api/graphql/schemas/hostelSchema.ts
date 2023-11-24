@@ -9,10 +9,25 @@ type Rooms {
     gender_type: String
   }
 
+type Booking {
+    id: ID!
+    user: ObjectId
+    room: ObjectId
+    checkInDate: Date
+    checkOutDate: Date
+    createdAt: Date
+    updatedAt: Date
+    status: String
+    totalAmountPaid: Float
+    transactionMethod: String
+}
+
   type Query {
     
     rooms: [Rooms]
     # Define more queries here
+
+    booking: [Booking]
     
 
   }
