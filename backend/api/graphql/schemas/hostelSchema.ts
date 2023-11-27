@@ -1,5 +1,5 @@
 export const typeDefs = `#graphql
-type Rooms {
+  type Room {
     id: ID!
     number: Int
     status: String
@@ -9,28 +9,34 @@ type Rooms {
     gender_type: String
   }
 
-type Booking {
+  type Booking {
     id: ID!
-    user: ObjectId
-    room: ObjectId
+    user: ID
+    room: ID
     checkInDate: Date
     checkOutDate: Date
-    createdAt: Date
-    updatedAt: Date
     status: String
     totalAmountPaid: Float
     transactionMethod: String
-}
-
-  type Query {
-    
-    rooms: [Rooms]
-    # Define more queries here
-
-    booking: [Booking]
-    
-
   }
 
+  type Query {
+    rooms: [Room]
+    # Define more queries here
+  }
+
+  input CreateBookingInput {
+    userId: ID!
+    roomId: ID!
+    checkInDate: Date!
+    checkOutDate: Date!
+    status: String!
+    totalAmountPaid: Float!
+    transactionMethod: String!
+  }
+
+  type Mutation {
+    addBooking(input: CreateBookingInput!): Booking!
+  }
 
 `;
