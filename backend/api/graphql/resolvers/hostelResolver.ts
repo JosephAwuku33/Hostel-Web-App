@@ -12,6 +12,8 @@ export const resolvers = {
     }
   },
 
-  
+  Mutation: {
+    
+  }
   
 };

@@ -13,8 +13,8 @@ export const typeDefs = `#graphql
     id: ID!
     user: ID
     room: ID
-    checkInDate: Date
-    checkOutDate: Date
+    checkInDate: String
+    checkOutDate: String
     status: String
     totalAmountPaid: Float
     transactionMethod: String
@@ -28,8 +28,8 @@ export const typeDefs = `#graphql
   input CreateBookingInput {
     userId: ID!
     roomId: ID!
-    checkInDate: Date!
-    checkOutDate: Date!
+    checkInDate: String!
+    checkOutDate: String!
     status: String!
     totalAmountPaid: Float!
     transactionMethod: String!
