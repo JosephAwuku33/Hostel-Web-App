@@ -36,7 +36,6 @@ const server = new ApolloServer<MyContext>({
 await server.start();
 connectDB();
 
-
 app.use(
   "/users",
   bodyParser.json(),
@@ -51,28 +50,39 @@ app.use(
   bodyParser.json(),
   expressMiddleware(server, {
     context: async ({ req }) => {
+      let token = "";
       // Get the user token from the headers.
-      const token = req.headers.authorization?.split(" ")[1] || "";
+
+      if (req.headers.authorization) {
+        token = req.headers.authorization.split(" ")[1] || "";
+      } else {
+        // Handle the case where req.headers.authorization is undefined
+        // You might want to provide a default token or handle it in some way
+        console.log("Bro where's your token huh");
+        return [];
+      }
 
       // Try to retrieve a user with the token
       const user = await getUser(token);
-      // console.log(user?.first_name);
+      //console.log(user?.first_name);
 
       // optionally block the user
       // we could also check user roles/permissions here
 
-      if (!user)
+      if (!user) {
         // throwing a `GraphQLError` here allows us to specify an HTTP status code,
         // standard `Error`s will have a 500 status code by default
+
         return new GraphQLError("User is not authenticated", {
           extensions: {
             code: "UNAUTHENTICATED",
             http: { status: 401 },
           },
         });
-
-      // Add the user to the context
-      return { user };
+      } else {
+        // Add the user to the context
+        return { user };
+      }
     },
   })
 );

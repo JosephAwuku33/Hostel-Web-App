@@ -1,4 +1,6 @@
+import { User } from "./userInterface"
 export interface MyContext {
-    token?: string
+    token?: string,
+    user?: User
   }
   

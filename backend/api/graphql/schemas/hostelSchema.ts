@@ -21,13 +21,13 @@ export const typeDefs = `#graphql
   }
 
   type Query {
-    rooms: [Room]
+    rooms:[Room]
     # Define more queries here
   }
 
   input CreateBookingInput {
-    userId: ID!
-    roomId: ID!
+    user: ID!
+    room: ID!
     checkInDate: String!
     checkOutDate: String!
     status: String!

@@ -1,19 +1,17 @@
 import mongoose from "mongoose";
-/**
- *
- */
+
 const BookingSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", /*required: true*/ },
     room: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "rooms",
-      required: true,
+      /*required: true*/
     },
-    checkInDate: { type: Date, required: true },
-    checkOutDate: { type: Date, required: true },
-    status: { type: String, required: true },
-    totalAmountPaid: { type: mongoose.Schema.Types.Number, required: true },
+    checkInDate: { type: String /*required: true*/ },
+    checkOutDate: { type: String, /*required: true */},
+    status: { type: String, /*required: true*/ },
+    totalAmountPaid: { type: mongoose.Schema.Types.Number, /*required: true*/ },
     transactionMethod: { type: String },
   },
   { timestamps: true }
