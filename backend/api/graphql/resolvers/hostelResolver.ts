@@ -9,7 +9,7 @@ export const resolvers = {
     rooms: async (_: any, __: any, contextValue: MyContext) => {
       if (!contextValue.user) {
         throw new GraphQLError(
-          "Not an authenticated user to be making requests",
+          "Not an authenticated user to be retriveing rooms requests",
           {
             extensions: {
               code: "UNAUTHENTICATED",
@@ -18,28 +18,48 @@ export const resolvers = {
           }
         );
       }
-      
+
       try {
         const rooms = await Rooms.find();
         const roomsArray = [...rooms];
-        
+
         return roomsArray;
       } catch (err) {
         throw new Error("Error fetching rooms from database");
       }
     },
+
+    room: async (_: any, args: any, contextValue: MyContext) => {
+      if (!contextValue.user) {
+        throw new GraphQLError(
+          "Not an authenticated user to be retrieving room requests",
+          {
+            extensions: {
+              code: "UNAUTHENTICATED",
+              http: { status: 401 },
+            },
+          }
+        );
+      }
+
+      const { id } = args;
+
+      // query specific room by ID
+      try {
+        const room = await Rooms.findById(id);
+        return room;
+      } catch (err) {
+        throw new Error("Room not found");
+      }
+    },
   },
 
   Mutation: {
-    // mutation to add a new booking 
-    addBooking: async (
-      _: any,
-      args: any,
-      contextValue: MyContext
-    ) => {
+    // mutation to add a new booking
+    addBooking: async (_: any, args: any, contextValue: MyContext) => {
       if (!contextValue.user) {
         throw new GraphQLError(
-          "Not an authenticated user to be making requests",
+          "Not an authenticated user to be making booking requests",
           {
             extensions: {
               code: "UNAUTHENTICATED",
@@ -71,6 +91,28 @@ export const resolvers = {
         return newBooking;
       } catch (err) {
         console.error(err);
+      }
+    },
+
+    deleteBooking: async (_: any, args: any, contextValue: MyContext) => {
+      if (!contextValue.user) {
+        throw new GraphQLError(
+          "Not an authenticated user to be deleting booking requests",
+          {
+            extensions: {
+              code: "UNAUTHENTICATED",
+              http: { status: 401 },
+            },
+          }
+        );
+      }
+
+      const { id } = args;
+      try {
+        const deletedBooking = Booking.findByIdAndDelete(id);
+        return deletedBooking;
+      } catch ( err ) {
+         throw new Error("Error occured while deleting booking, either the booking hasn't been made or a network issue");
       }
     },
   },

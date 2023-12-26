@@ -22,6 +22,8 @@ export const typeDefs = `#graphql
 
   type Query {
     rooms:[Room]
+    room(id: ID): Room
+    booking(id: ID): Booking
     # Define more queries here
   }
 
@@ -37,6 +39,7 @@ export const typeDefs = `#graphql
 
   type Mutation {
     addBooking(input: CreateBookingInput!): Booking!
+    deleteBooking(id: ID): Booking
   }
 
 `;
