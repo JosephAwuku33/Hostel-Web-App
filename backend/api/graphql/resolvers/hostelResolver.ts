@@ -6,7 +6,7 @@ import { MyContext } from "../../../types/context.js";
 export const resolvers = {
   Query: {
     // query for returning rooms available
-    rooms: async (parent: any, args: any, contextValue: MyContext) => {
+    rooms: async (_: any, __: any, contextValue: MyContext) => {
       if (!contextValue.user) {
         throw new GraphQLError(
           "Not an authenticated user to be making requests",
@@ -33,7 +33,7 @@ export const resolvers = {
   Mutation: {
     // mutation to add a new booking 
     addBooking: async (
-      parent: any,
+      _: any,
       args: any,
       contextValue: MyContext
     ) => {
@@ -68,7 +68,6 @@ export const resolvers = {
           totalAmountPaid: totalAmountPaid,
           transactionMethod: transactionMethod,
         });
-        console.log("Argument set 2");
         return newBooking;
       } catch (err) {
         console.error(err);
