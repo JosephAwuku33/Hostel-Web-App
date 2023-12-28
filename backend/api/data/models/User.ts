@@ -17,12 +17,20 @@ const userSchema = new mongoose.Schema({
     email: { 
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        validate: {
+            validator: function(v: string) {
+              return /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/.test(v);
+            },
+            message: (props: { value: string; }) => `${props.value} is not a email address!`
+          },
+        
     },
 
     password: { 
         type: String, 
-        required: true
+        required: true,
+        minLength: [8, "Password length is short"]
     },
 });
 
