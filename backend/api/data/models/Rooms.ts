@@ -11,7 +11,8 @@ const roomSchema = new mongoose.Schema({
     status: {
         type: String, 
         required: true,
-        default: null
+        default: null,
+        enum: ["CONFIRMED", "PENDING", "FAILED"]
     },
 
     type: { 
@@ -24,6 +25,7 @@ const roomSchema = new mongoose.Schema({
         type: Number,
         required: true,
         default: null, 
+        min: 1,
     },
 
     price: {
@@ -36,6 +38,7 @@ const roomSchema = new mongoose.Schema({
         type: String,
         required: true,
         default: null,
+        enum: ["male", "female"]
     }
 });
 const Rooms = mongoose.model('rooms', roomSchema);
