@@ -20,7 +20,7 @@ export const resolvers = {
       }
 
       try {
-        const rooms = await Rooms.find({status: "available"});
+        const rooms = await Rooms.find({ status: "available" });
         const roomsArray = [...rooms];
 
         return roomsArray;
@@ -91,20 +91,27 @@ export const resolvers = {
 
         const roomId = newBooking.room;
 
-        const updatedRoom = await Rooms.findByIdAndUpdate(roomId, {
-          $inc: { occupants: -1 }, // Decrement the occupants by 1
-        }, {new: true});
+        const updatedRoom = await Rooms.findByIdAndUpdate(
+          roomId,
+          {
+            $inc: { occupants: -1 }, // Decrement the occupants by 1
+          },
+          { new: true }
+        );
 
-        if(updatedRoom?.occupants === 0){
-          await Rooms.findByIdAndUpdate(roomId, { $set: { status: "occupied" } });
+        if (updatedRoom?.occupants === 0) {
+          await Rooms.findByIdAndUpdate(roomId, {
+            $set: { status: "occupied" },
+          });
         }
-        
+
         return newBooking;
       } catch (err) {
         console.error(err);
       }
     },
 
+    // I think I'll need a review of this later
     deleteBooking: async (_: any, args: any, contextValue: MyContext) => {
       if (!contextValue.user) {
         throw new GraphQLError(
@@ -120,10 +127,27 @@ export const resolvers = {
 
       const { id } = args;
       try {
-        const deletedBooking = Booking.findByIdAndDelete(id);
+        // Well first you have to make sure any other fields in the sub documents have to be updated rightly first
+        // E.g the status of the room,
+        const selectedBooking = await Booking.findById(id);
+        const roomId = selectedBooking?.room;
+        const updatedRoom = await Rooms.findByIdAndUpdate(roomId, {
+          $inc: {
+            occupants: +1,
+          } /**If a booking has been made by this particular user and he/she deletes it, 
+         then it means the occupant number of the room increases as there is space for it */,
+        });
+        if (updatedRoom?.occupants !== 0) {
+          await Rooms.findByIdAndUpdate(roomId, {
+            $set: { status: "available" },
+          });
+        }
+        const deletedBooking = await Booking.findByIdAndDelete(id);
         return deletedBooking;
-      } catch ( err ) {
-         throw new Error("Error occured while deleting booking, either the booking hasn't been made or a network issue");
+      } catch (err) {
+        throw new Error(
+          "Error occured while deleting booking, either the booking hasn't been made or a network issue"
+        );
       }
     },
   },
