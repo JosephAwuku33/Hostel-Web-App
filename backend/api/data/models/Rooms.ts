@@ -12,7 +12,7 @@ const roomSchema = new mongoose.Schema({
         type: String, 
         required: true,
         default: null,
-        enum: ["AVAILABLE", "OCCUPIED"]
+        enum: ["available", "occupied"]
     },
 
     type: { 

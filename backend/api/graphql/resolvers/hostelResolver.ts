@@ -20,7 +20,7 @@ export const resolvers = {
       }
 
       try {
-        const rooms = await Rooms.find();
+        const rooms = await Rooms.find({status: "available"});
         const roomsArray = [...rooms];
 
         return roomsArray;
@@ -88,6 +88,17 @@ export const resolvers = {
           totalAmountPaid: totalAmountPaid,
           transactionMethod: transactionMethod,
         });
+
+        const roomId = newBooking.room;
+
+        const updatedRoom = await Rooms.findByIdAndUpdate(roomId, {
+          $inc: { occupants: -1 }, // Decrement the occupants by 1
+        }, {new: true});
+
+        if(updatedRoom?.occupants === 0){
+          await Rooms.findByIdAndUpdate(roomId, { $set: { status: "occupied" } });
+        }
+        
         return newBooking;
       } catch (err) {
         console.error(err);
