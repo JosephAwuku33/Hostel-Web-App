@@ -10,7 +10,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 
 function App() {
   return (
-    <div className="font-serif">
+    <div className="font-primary">
       <BrowserRouter>
         <Routes>
           <Route index element={<Login />} />
