@@ -1,7 +1,8 @@
 import { ComponentType, FC, useEffect } from "react";
 import { useAppSelector } from "../../redux/hooks";
 import { useNavigate } from "react-router-dom";
-import SideBar from "../../components/SideBar";
+import SideBar from "@/screen_components/SideBar";
+import { shallowEqual } from "react-redux";
 
 interface HomeLayoutProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -10,21 +11,19 @@ interface HomeLayoutProps {
 
 const Home: FC<HomeLayoutProps> = ({ component: Component, ...props }) => {
   const navigate = useNavigate();
-  // const dispatch = useAppDispatch();
 
-  const { user } = useAppSelector((state) => state.auth);
+  const userInfo = useAppSelector((state) => state.auth.userInfo, shallowEqual);
 
   useEffect(() => {
-    if (!user) {
+    if (!userInfo) {
       navigate("/");
     }
-  }, [user, navigate]);
+  }, [userInfo, navigate]);
 
   return (
     <main className="flex min-h-screen">
-      <SideBar/>
-
-      <section className="w-full h-full min-h-screen">
+      <SideBar />
+      <section className="w-full h-full">
         <Component {...props} />
       </section>
     </main>
