@@ -3,20 +3,18 @@ import Booking from "../../data/models/Booking.js";
 import { GraphQLError } from "graphql";
 import { MyContext } from "../../../types/context.js";
 
+
 export const resolvers = {
   Query: {
     // query for returning rooms available
     rooms: async (_: any, __: any, contextValue: MyContext) => {
       if (!contextValue.user) {
-        throw new GraphQLError(
-          "Not an authenticated user to be retriveing rooms requests",
-          {
-            extensions: {
-              code: "UNAUTHENTICATED",
-              http: { status: 401 },
-            },
-          }
-        );
+        return new GraphQLError("Not authenticated to be making room requests", {
+          extensions: {
+            code: "UNAUTHENTICATED",
+            http: { status: 401 },
+          },
+        });
       }
 
       try {
@@ -31,15 +29,12 @@ export const resolvers = {
 
     room: async (_: any, args: any, contextValue: MyContext) => {
       if (!contextValue.user) {
-        throw new GraphQLError(
-          "Not an authenticated user to be retrieving room requests",
-          {
-            extensions: {
-              code: "UNAUTHENTICATED",
-              http: { status: 401 },
-            },
-          }
-        );
+        return new GraphQLError("Not authenticated to be making room requests", {
+          extensions: {
+            code: "UNAUTHENTICATED",
+            http: { status: 401 },
+          },
+        });
       }
 
       const { id } = args;
@@ -58,15 +53,12 @@ export const resolvers = {
     // mutation to add a new booking
     addBooking: async (_: any, args: any, contextValue: MyContext) => {
       if (!contextValue.user) {
-        throw new GraphQLError(
-          "Not an authenticated user to be making booking requests",
-          {
-            extensions: {
-              code: "UNAUTHENTICATED",
-              http: { status: 401 },
-            },
-          }
-        );
+        return new GraphQLError("Not authenticated to be making booking requests", {
+          extensions: {
+            code: "UNAUTHENTICATED",
+            http: { status: 401 },
+          },
+        });
       }
       const {
         room,
@@ -114,15 +106,12 @@ export const resolvers = {
     // I think I'll need a review of this later
     deleteBooking: async (_: any, args: any, contextValue: MyContext) => {
       if (!contextValue.user) {
-        throw new GraphQLError(
-          "Not an authenticated user to be deleting booking requests",
-          {
-            extensions: {
-              code: "UNAUTHENTICATED",
-              http: { status: 401 },
-            },
-          }
-        );
+        return new GraphQLError("Not authenticated to be deleting bookings", {
+          extensions: {
+            code: "UNAUTHENTICATED",
+            http: { status: 401 },
+          },
+        });
       }
 
       const { id } = args;

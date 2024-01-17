@@ -1,6 +1,7 @@
 import express from 'express';
 import { getMe, registerUser, loginUser, logoutUser } from '../controllers/userController.js';
 import { protect } from '../middleware/authMiddleware.js';
+import { rateLimiter } from '../middleware/rateLimiterMiddleware.js';
 
 const userRouter = express.Router();
 userRouter.post('/signup', registerUser);

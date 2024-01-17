@@ -13,6 +13,7 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import bodyParser from "body-parser";
+import { generateAuthError } from "./api/util/generateError.js";
 
 const API_PORT = process.env.API_PORT || 4000;
 const LOCALHOST = process.env.CLIENT_URL;
@@ -49,22 +50,21 @@ app.use(
   cors<cors.CorsRequest>(corsOptions),
   bodyParser.json(),
   expressMiddleware(server, {
-    context: async ({ req }) => {
+    context: async ({ req, res }) => {
       let token = "";
       // Get the user token from the headers.
 
       if (req.headers.authorization) {
         token = req.headers.authorization.split(" ")[1] || "";
       } else {
-        // Handle the case where req.headers.authorization is undefined
-        // You might want to provide a default token or handle it in some way
-        console.log("Bro where's your token huh");
-        return [];
+        return res
+          .status(401)
+          .json({ message: "Unauthorized - No Authorization Token" });
       }
 
       // Try to retrieve a user with the token
       const user = await getUser(token);
-      //console.log(user?.first_name);
+      console.log(user?.first_name);
 
       // optionally block the user
       // we could also check user roles/permissions here

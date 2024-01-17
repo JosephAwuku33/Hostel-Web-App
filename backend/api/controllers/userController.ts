@@ -6,6 +6,7 @@ import User from "../data/models/User.js";
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import generateToken from "../util/generateToken.js";
+import jwt, { VerifyErrors } from "jsonwebtoken";
 
 // @desc    Register new user
 // @route   POST /users/signup
@@ -57,7 +58,6 @@ const registerUser = async (req: Request, res: Response) => {
   }
 };
 
-
 // @desc    Authenticate a user
 // @route   POST /users/login
 // @access  Public
@@ -83,13 +83,13 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-
 // @desc    Get user data
 // @route   GET /users/me
 // @access  Private
 const getMe = (req: Request, res: Response) => {
   res.status(200).json(req.body.user);
 };
+
 
 
 // @desc    Logout user / clear cookie
