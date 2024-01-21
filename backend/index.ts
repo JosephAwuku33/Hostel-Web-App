@@ -13,7 +13,9 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { generateAuthError } from "./api/util/generateError.js";
+import passportSetup from "./api/passport/index.js";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 
 const API_PORT = process.env.API_PORT || 4000;
 const LOCALHOST = process.env.CLIENT_URL;
@@ -36,6 +38,20 @@ const server = new ApolloServer<MyContext>({
 
 await server.start();
 connectDB();
+
+app.use(
+  session({
+    secret: process.env.JWT_REFRESH_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false },
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
+  })
+);
+
+// ===== Passport ====
+app.use(passportSetup.initialize());
+app.use(passportSetup.session()); // will call the deserializeUser
 
 app.use(
   "/users",

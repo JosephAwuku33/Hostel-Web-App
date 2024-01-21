@@ -6,7 +6,6 @@ import User from "../data/models/User.js";
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import generateToken from "../util/generateToken.js";
-import jwt, { VerifyErrors } from "jsonwebtoken";
 
 // @desc    Register new user
 // @route   POST /users/signup
@@ -102,5 +101,8 @@ const logoutUser = (req: Request, res: Response) => {
   });
   res.status(200).json({ message: "Logged out successfully" });
 };
+
+
+
 
 export { registerUser, loginUser, logoutUser, getMe };
