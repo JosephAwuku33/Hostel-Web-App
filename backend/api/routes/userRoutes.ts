@@ -32,9 +32,10 @@ userRouter.get(
 userRouter.get(
   "/google/callback",
   passportSetup.authenticate("google", {
-    successRedirect: "/profileTest",
+    successRedirect: "/users/profileTest",
     failureRedirect: "/login",
   })
+  
 );
 userRouter.post("/logout", logoutUser);
 

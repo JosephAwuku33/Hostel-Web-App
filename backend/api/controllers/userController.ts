@@ -5,7 +5,9 @@
 import User from "../data/models/User.js";
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken';
 import generateToken from "../util/generateToken.js";
+import refreshToken from "../util/refreshToken.js";
 
 // @desc    Register new user
 // @route   POST /users/signup
@@ -67,6 +69,22 @@ const loginUser = async (req: Request, res: Response) => {
     const user = await User.findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password!))) {
+      // Check if the existing token is expired 
+      const existingToken = req.cookies.jwt;
+
+      if ( existingToken ){
+        try {
+          jwt.verify(existingToken, process.env.JWT_ACCESS_SECRET)
+        } catch ( err: any ) {
+          if ( err.name === 'TokenExpiredError') {
+             // Token is expired, refresh it
+             refreshToken(res, user._id);
+          } else {
+             // Token is invalid for other reasons
+             return res.status(401).json({message: 'Invalid token'});
+          }
+        }
+      }
       generateToken(res, user._id);
       res.json({
         _id: user._id,
@@ -99,6 +117,7 @@ const logoutUser = (req: Request, res: Response) => {
     httpOnly: true,
     expires: new Date(0),
   });
+  
   res.status(200).json({ message: "Logged out successfully" });
 };
 

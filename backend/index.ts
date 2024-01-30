@@ -16,6 +16,7 @@ import bodyParser from "body-parser";
 import passportSetup from "./api/passport/index.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import cookieParser from "cookie-parser";
 
 const API_PORT = process.env.API_PORT || 4000;
 const LOCALHOST = process.env.CLIENT_URL;
@@ -27,6 +28,7 @@ const corsOptions = {
 };
 
 const app = express();
+app.use(cookieParser());
 
 const httpServer = http.createServer(app);
 
@@ -60,6 +62,7 @@ app.use(
   express.urlencoded({ extended: false }),
   userRouter
 );
+
 
 app.use(
   "/api",
@@ -108,3 +111,5 @@ await new Promise<void>((resolve) =>
 );
 
 console.log(`🚀 Server ready at http://localhost:4000/api/`);
+
+
