@@ -1,4 +1,4 @@
-import { useState, useEffect, SetStateAction } from "react";
+import { useState, SetStateAction, useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks.ts";
 import { useNavigate } from "react-router-dom";
@@ -14,29 +14,49 @@ export default function Login() {
   const dispatch = useAppDispatch();
 
   const [login, { isLoading }] = useLoginMutation();
+  const isAuth = useAppSelector((state) => state.auth.isAuthenticated);
 
-  const userInfo = useAppSelector((state) => state.auth.userInfo);
+  //const [ successGoogleLogin] = useSuccessGoogleLoginMutation();
 
-  const onEmailChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+  /*
+  useEffect(() => {
+    const getUser = async () => {
+       try {
+        const { user } = await successGoogleLogin({}).unwrap();
+        dispatch(setGoogleCredentials({ user }));
+       } catch (err){
+        console.log(err);
+       }
+    }
+
+    getUser();
+  }, [successGoogleLogin, dispatch]);
+  */
+  useEffect(() => {
+    if ( isAuth ){
+      navigate("/dashboard");
+    }
+  }, [isAuth, navigate, dispatch]);
+
+  const onEmailChange = (e: { target: { value: SetStateAction<string> } }) => {
     setEmail(e.target.value);
   };
 
-  const onPasswordChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+  const onPasswordChange = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
     setPassword(e.target.value);
   };
-
-  useEffect(() => {
-    if (userInfo) {
-      navigate("/dashboard");
-    }
-  }, [userInfo, navigate, dispatch]);
 
   const onSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     try {
-      const res = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...res }));
+      const { accessToken } = await login({ email, password }).unwrap();
+      console.log(accessToken);
+      dispatch(setCredentials({ accessToken }));
+      setEmail("");
+      setPassword("");
       navigate("/dashboard");
     } catch (err) {
       toast.error(err as string);
@@ -44,6 +64,14 @@ export default function Login() {
     }
   };
 
+  /*
+  const handleGoogleSignIn = async () => {
+    setEmail("");
+    setPassword("");
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    window.open("http://localhost:4000/users/google", "_self");
+  };
+  */
   const overrideProps = {
     display: "block",
     margin: "0 auto",
@@ -131,6 +159,22 @@ export default function Login() {
                 </button>
               </div>
             </form>
+
+            <div>
+              <button className="flex w-full justify-center rounded-md mt-2 bg-red-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                Sign Up with Google
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  className="bi bi-google"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M15.545 6.558a9.4 9.4 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.7 7.7 0 0 1 5.352 2.082l-2.284 2.284A4.35 4.35 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.8 4.8 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.7 3.7 0 0 0 1.599-2.431H8v-3.08z" />
+                </svg>
+              </button>
+            </div>
 
             <p className="mt-10 text-center text-sm text-gray-900">
               Not a member?{" "}

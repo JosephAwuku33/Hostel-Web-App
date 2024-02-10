@@ -28,9 +28,8 @@ const corsOptions = {
 };
 
 const app = express();
-app.use(cookieParser());
-
 const httpServer = http.createServer(app);
+app.use(cookieParser());
 
 const server = new ApolloServer<MyContext>({
   typeDefs,
@@ -40,6 +39,7 @@ const server = new ApolloServer<MyContext>({
 
 await server.start();
 connectDB();
+
 
 app.use(
   session({
@@ -51,9 +51,11 @@ app.use(
   })
 );
 
+
 // ===== Passport ====
 app.use(passportSetup.initialize());
 app.use(passportSetup.session()); // will call the deserializeUser
+
 
 app.use(
   "/users",
@@ -62,7 +64,6 @@ app.use(
   express.urlencoded({ extended: false }),
   userRouter
 );
-
 
 app.use(
   "/api",
@@ -81,8 +82,8 @@ app.use(
           .json({ message: "Unauthorized - No Authorization Token" });
       }
 
-      // Try to retrieve a user with the token
-      const user = await getUser(token);
+      // Try to retrieve a user with the token or access it from passport's session state
+      const user = await getUser(token) || req.user;
       console.log(user?.first_name);
 
       // optionally block the user
@@ -100,6 +101,7 @@ app.use(
         });
       } else {
         // Add the user to the context
+        console.log(user);
         return { user };
       }
     },
@@ -111,5 +113,3 @@ await new Promise<void>((resolve) =>
 );
 
 console.log(`🚀 Server ready at http://localhost:4000/api/`);
-
-

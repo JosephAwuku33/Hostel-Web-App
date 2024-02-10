@@ -8,6 +8,7 @@ export const resolvers = {
   Query: {
     // query for returning rooms available
     rooms: async (_: any, __: any, contextValue: MyContext) => {
+      console.log(contextValue.user);
       if (!contextValue.user) {
         return new GraphQLError("Not authenticated to be making room requests", {
           extensions: {

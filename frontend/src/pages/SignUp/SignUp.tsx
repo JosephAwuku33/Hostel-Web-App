@@ -3,7 +3,9 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../../screen_components/Spinner";
-import { useRegisterMutation } from "../../redux/auth/usersApiSlice";
+import {
+  useRegisterMutation,
+} from "../../redux/auth/usersApiSlice";
 import { setCredentials } from "../../redux/auth/authSlice";
 
 export default function SignUp() {
@@ -25,19 +27,15 @@ export default function SignUp() {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+  const isAuth = useAppSelector((state) => state.auth.isAuthenticated);
   const [register, { isLoading }] = useRegisterMutation();
 
-  const { userInfo } = useAppSelector(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (state: { auth: any }) => state.auth
-  );
 
   useEffect(() => {
-    if (userInfo) {
+    if ( isAuth ){
       navigate("/dashboard");
     }
-  }, [navigate, userInfo]);
+  }, [isAuth, navigate]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onChange = (e: { target: { name: any; value: any } }) => {
@@ -46,6 +44,12 @@ export default function SignUp() {
       [e.target.name]: e.target.value,
     }));
   };
+
+  /*
+  const handleGoogleSignIn = async () => {
+    window.open("http://localhost:4000/users/google", "_self");
+  }
+  */
 
   const onSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -84,7 +88,7 @@ export default function SignUp() {
             </p>
           </section>
           {/**Right Column */}
-          <section className="flex flex-col gap-3 items-center justify-start md:items-start md:justify-start h-screen w-full lg:w-2/3 md:w-2/3 bg-white p-2">
+          <section className="flex flex-col gap-3 items-center justify-start md:items-center md:justify-center h-screen w-full lg:w-2/3 md:w-2/3 bg-white p-2">
             <p className="text-4xl font-bold lg:ml-8">Welcome!</p>
             <button className="rounded w-3/4 p-2 lg:ml-8 bg-blue-700 text-white flex items-center justify-center gap-2">
               Sign Up with Facebook
@@ -99,7 +103,8 @@ export default function SignUp() {
                 <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951" />
               </svg>
             </button>
-            <button className="rounded w-3/4 p-2 gap-2 lg:ml-8 lg:mt-2 bg-red-700 text-white flex items-center justify-center">
+            <button //onClick={handleGoogleSignIn}
+             className="rounded w-3/4 p-2 gap-2 lg:ml-8 lg:mt-2 bg-red-700 text-white flex items-center justify-center">
               Sign Up with Google
               <svg
                 xmlns="http://www.w3.org/2000/svg"

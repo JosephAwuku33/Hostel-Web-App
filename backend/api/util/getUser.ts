@@ -31,16 +31,6 @@ export const getUser = async (token: any) => {
   } catch (err) {
     console.error("Error in getUser:", err);
 
-    if (err instanceof jwt.JsonWebTokenError) {
-      // Handle JWT decoding errors
-      throw new GraphQLError("Invalid token", {
-        extensions: {
-          code: "UNAUTHENTICATED",
-          http: { status: 401 },
-        },
-      });
-    }
-
     // Handle other errors
     throw new GraphQLError("Authentication error", {
       extensions: {

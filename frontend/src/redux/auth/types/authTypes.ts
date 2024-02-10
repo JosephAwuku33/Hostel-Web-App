@@ -19,3 +19,17 @@ export interface ApiResponse {
     token: string;
   };
 }
+
+
+export interface UserInfo {
+  token?: string | null,
+  googleUser? : GoogleUser | null
+  isAuthenticated : boolean
+}
+
+interface GoogleUser {
+   _id: string,
+   first_name: string, 
+   last_name: string,
+   email: string
+}

@@ -5,7 +5,7 @@
 import User from "../data/models/User.js";
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 import generateToken from "../util/generateToken.js";
 import refreshToken from "../util/refreshToken.js";
 
@@ -65,39 +65,67 @@ const registerUser = async (req: Request, res: Response) => {
 const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-
     const user = await User.findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password!))) {
-      // Check if the existing token is expired 
-      const existingToken = req.cookies.jwt;
+      //console.log(`This is the existing Token ${existingToken}`);
 
-      if ( existingToken ){
-        try {
-          jwt.verify(existingToken, process.env.JWT_ACCESS_SECRET)
-        } catch ( err: any ) {
-          if ( err.name === 'TokenExpiredError') {
-             // Token is expired, refresh it
-             refreshToken(res, user._id);
-          } else {
-             // Token is invalid for other reasons
-             return res.status(401).json({message: 'Invalid token'});
-          }
-        }
-      }
-      generateToken(res, user._id);
+      // Generate a new access token and send the response
+      const accessToken = generateToken(res, user._id);
+
+      // Generate a new refresh token
+      const refresh_token = refreshToken(res, user._id);
+
+      // Set the new token in the response
+      res.cookie("jwt", refresh_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
       res.json({
+        /*
         _id: user._id,
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
+        */
+        accessToken,
       });
     } else {
       res.status(400).send("Invalid Credentials");
     }
   } catch (err) {
-    res.send(`E make beans: ${err}`);
+    console.error("Error during login:", err);
+    res.status(500).send("Internal Server Error");
   }
+};
+
+// @desc    Refresh acccess token
+// @route   GET /users/refresh
+// @acess   Public
+const refresh = (req: Request, res: Response) => {
+  const cookies = req.cookies;
+
+  if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized" });
+
+  const refreshToken = cookies.jwt;
+
+  jwt.verify(
+    refreshToken,
+    process.env.JWT_REFRESH_SECRET,
+    async (err: any, decoded: any) => {
+      if (err) return res.status(403).json({ message: "Forbidden" });
+
+      const foundUser = await User.findById(decoded.id);
+
+      if (!foundUser) return res.status(401).json({ message: "Unauthorized" });
+
+      const accessToken = generateToken(res, foundUser._id);
+
+      res.json({ accessToken });
+    }
+  );
 };
 
 // @desc    Get user data
@@ -107,21 +135,22 @@ const getMe = (req: Request, res: Response) => {
   res.status(200).json(req.body.user);
 };
 
-
-
 // @desc    Logout user / clear cookie
 // @route   POST /api/users/logout
 // @access  Public
 const logoutUser = (req: Request, res: Response) => {
-  res.cookie("jwt", "", {
-    httpOnly: true,
-    expires: new Date(0),
-  });
-  
-  res.status(200).json({ message: "Logged out successfully" });
+  /*
+  if (req.user) {
+    req.logOut;
+    res
+      .status(200)
+      .json({ message: "Logged Out From Google Authentication Successfully" });
+  } 
+  */
+
+  if ( !req.cookies?.jwt ) return res.sendStatus(204);
+  res.clearCookie('jwt', { httpOnly: true, sameSite: 'strict', secure: true })
+  res.json({ message: "Cookie cleared Succesfully"});
 };
 
-
-
-
-export { registerUser, loginUser, logoutUser, getMe };
+export { registerUser, loginUser, logoutUser, getMe, refresh };

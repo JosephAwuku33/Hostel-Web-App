@@ -7,6 +7,7 @@ declare global {
       JWT_ACCESS_SECRET: string
       JWT_REFRESH_SECRET: string
       JWT_EXPIRATION: string
+      JWT_LONG_EXPIRATION: string
       GOOGLE_CLIENT_SECRET: string
       GOOGLE_CLIENT_ID: string
       CLIENT_URL: string
