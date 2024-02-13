@@ -12,7 +12,6 @@ const Home: FC<HomeLayoutProps> = ({ component: Component, ...props }) => {
   const navigate = useNavigate();
 
   const isAuthenticated  = useAppSelector((state) => state.auth.isAuthenticated);
-  console.log(isAuthenticated);
   
   useEffect(() => {
     if (!isAuthenticated) {

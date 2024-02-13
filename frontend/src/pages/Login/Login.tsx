@@ -33,8 +33,8 @@ export default function Login() {
   }, [successGoogleLogin, dispatch]);
   */
   useEffect(() => {
-    if ( isAuth ){
-      navigate("/dashboard");
+    if ( !isAuth ){
+      navigate("/");
     }
   }, [isAuth, navigate, dispatch]);
 
@@ -53,7 +53,6 @@ export default function Login() {
 
     try {
       const { accessToken } = await login({ email, password }).unwrap();
-      console.log(accessToken);
       dispatch(setCredentials({ accessToken }));
       setEmail("");
       setPassword("");
@@ -64,6 +63,7 @@ export default function Login() {
     }
   };
 
+  
   /*
   const handleGoogleSignIn = async () => {
     setEmail("");
@@ -72,6 +72,7 @@ export default function Login() {
     window.open("http://localhost:4000/users/google", "_self");
   };
   */
+  
   const overrideProps = {
     display: "block",
     margin: "0 auto",
@@ -153,7 +154,7 @@ export default function Login() {
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="flex w-full justify-center rounded-md bg-primary-blue text-primary-white px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   Sign in
                 </button>
@@ -161,7 +162,7 @@ export default function Login() {
             </form>
 
             <div>
-              <button className="flex w-full justify-center rounded-md mt-2 bg-red-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+              <button className="flex w-full justify-center rounded-md mt-2 bg-primary-red text-primary-white px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 Sign Up with Google
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

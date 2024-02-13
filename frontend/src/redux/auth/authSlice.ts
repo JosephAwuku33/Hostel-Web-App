@@ -5,7 +5,7 @@ import { UserInfo } from "./types/authTypes";
 const initialState: UserInfo = {
   token : null,
   googleUser : null,
-  isAuthenticated: false
+  isAuthenticated: localStorage.getItem('isLoggedIn') === 'true'
 };
 
 const authSlice = createSlice({
@@ -16,16 +16,19 @@ const authSlice = createSlice({
        const { accessToken } = action.payload;
        state.token = accessToken;
        state.isAuthenticated = true;
+       localStorage.setItem('isLoggedIn', 'true');
     },
     setGoogleCredentials: ( state, action) => {
        const { user } = action.payload;
        state.googleUser = user;
        state.isAuthenticated = true;
+       localStorage.setItem('isLoggedIn', 'true');
     },
     logout: (state) => {
       state.token = null;
       state.googleUser = null;
       state.isAuthenticated = false;
+      localStorage.removeItem('isLoggedIn');
     },
   },
 });

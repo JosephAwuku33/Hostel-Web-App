@@ -34,6 +34,7 @@ userRouter.get(
   })
 );
 
+// I'll come back to the google auth stuff on the frontend
 userRouter.get(
   "/google/callback",
   passportSetup.authenticate("google", {

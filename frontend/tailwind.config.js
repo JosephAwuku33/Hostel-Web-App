@@ -17,6 +17,13 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    colors: {
+      'primary-white': '#ffffff',
+      'primary-blue':  '#1570EF',
+      'primary-grey': '#E9EBF8',
+      'primary-black': '#000000',
+      'primary-red':'#D11F19'
+    },
     fontFamily: {
       'primary': ['Inter']
     },

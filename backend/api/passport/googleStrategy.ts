@@ -43,7 +43,7 @@ const configureGoogleStrategy = async (passport: PassportStatic) => {
               email: primaryEmail,
             });
 
-            console.log(newGoogleUser);
+            console.log(newGoogleUser._id);
 
             if (newGoogleUser) {
               return done(null, newGoogleUser);

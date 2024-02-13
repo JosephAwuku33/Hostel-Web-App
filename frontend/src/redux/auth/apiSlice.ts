@@ -12,6 +12,7 @@ import type { RootState } from "../store";
 import { setCredentials, logout } from "./authSlice";
 
 
+
 const baseQuery = fetchBaseQuery({
   baseUrl: "",
   credentials: "include",
@@ -21,6 +22,7 @@ const baseQuery = fetchBaseQuery({
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
     }
+    console.log(`These are the ${token}`);
     return headers;
   },
 });
