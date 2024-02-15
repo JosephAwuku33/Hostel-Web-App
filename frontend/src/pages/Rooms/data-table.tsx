@@ -1,11 +1,12 @@
-"use client"
-
+import { useState } from "react";
 import {
   ColumnDef,
   flexRender,
+  ColumnFiltersState,
   getCoreRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+  getFilteredRowModel,
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -14,25 +15,43 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-
+} from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+    []
+  );
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-  })
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      columnFilters
+    }
+  });
 
   return (
     <div className="rounded-md border">
+      <div className="flex items-center p-3">
+        <Input
+          placeholder="Filter gender..."
+          value={(table.getColumn("gender_type")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("gender_type")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+      </div>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -47,7 +66,7 @@ export function DataTable<TData, TValue>({
                           header.getContext()
                         )}
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
@@ -76,5 +95,5 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }

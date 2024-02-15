@@ -1,5 +1,3 @@
-"use client"
-
 import { ColumnDef } from "@tanstack/react-table"
 
 // This type is used to define the shape of our data.
@@ -40,13 +38,24 @@ export const columnsHeader: ColumnDef<Room>[] = [
     accessorKey: "number",
     header: "Room Number",
   },
+
+  {
+    accessorKey: "gender_type",
+    header: "Gender",
+  },
+
+  {
+    accessorKey: "price",
+    header: "Price",
+  },
+
   {
     accessorKey: "occupants",
     header: "occupants",
   },
   {
-    accessorKey: "gender",
-    header: "Gender",
+    accessorKey: "status",
+    header: "status",
   },
 ]
 
