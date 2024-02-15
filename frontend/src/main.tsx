@@ -2,26 +2,28 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./css/index.css";
-import {
-  ApolloClient,
-  InMemoryCache,
-  createHttpLink,
-  ApolloProvider,
-} from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
-import { URI } from "./config/configs.ts";
+// //import {
+//   ApolloClient,
+//   InMemoryCache,
+//   createHttpLink,
+// } from "@apollo/client";
+//import { setContext } from "@apollo/client/link/context";
+//import { URI } from "./config/configs.ts";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
-import { useAppSelector } from "./redux/hooks.ts";
+//import { useAppSelector } from "./redux/hooks.ts";
 import { BrowserRouter } from "react-router-dom";
+import ApolloProvider from "./apollo/index.tsx";
 
+/*
 const httpLink = createHttpLink({
-  uri: URI,
+  uri: URI
 });
+
 
 const authLink = setContext((_, { headers }) => {
   const token = useAppSelector((state) => state.auth.token);
-
+  console.log(`This is the ${token}`);
   // return the headers to the context so httpLink can read them
   return {
     headers: {
@@ -31,15 +33,19 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+
+
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
+  connectToDevTools: true
 });
+*/
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
-      <ApolloProvider client={client}>
+      <ApolloProvider>
         <BrowserRouter>
           <App />
         </BrowserRouter>

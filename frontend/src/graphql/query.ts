@@ -8,8 +8,8 @@ query Getrooms {
     price
     occupants
     status
-    type
     gender_type
   }
 }
 `;
+

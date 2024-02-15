@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../data/models/User.js";
 import { GraphQLError } from "graphql";
 
-export const getUser = async (token: any) => {
+export const getUser = async (token: string) => {
   try {
     if (!token) {
       throw new GraphQLError("Token isn't provided", {
@@ -17,15 +17,6 @@ export const getUser = async (token: any) => {
       id: string;
     };
     const user = await User.findById(decoded.id);
-
-    if (!user) {
-      throw new GraphQLError("User does not exist", {
-        extensions: {
-          code: "UNAUTHENTICATED",
-          http: { status: 401 },
-        },
-      });
-    }
 
     return user;
   } catch (err) {

@@ -13,10 +13,6 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import bodyParser from "body-parser";
-import passportSetup from "./api/passport/index.js";
-import session from "express-session";
-import MongoStore from "connect-mongo";
-import cookieParser from "cookie-parser";
 
 const API_PORT = process.env.API_PORT || 4000;
 const LOCALHOST = process.env.CLIENT_URL;
@@ -29,33 +25,16 @@ const corsOptions = {
 
 const app = express();
 const httpServer = http.createServer(app);
-app.use(cookieParser());
 
 const server = new ApolloServer<MyContext>({
   typeDefs,
   resolvers,
+  introspection: true,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
 await server.start();
 connectDB();
-
-
-app.use(
-  session({
-    secret: process.env.JWT_REFRESH_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false },
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
-  })
-);
-
-
-// ===== Passport ====
-app.use(passportSetup.initialize());
-app.use(passportSetup.session()); // will call the deserializeUser
-
 
 app.use(
   "/users",
@@ -72,19 +51,26 @@ app.use(
   expressMiddleware(server, {
     context: async ({ req, res }) => {
       let token = "";
-      // Get the user token from the headers.
+      // Log the value of the Authorization header
+      console.log("Authorization header:", req.headers.authorization);
 
       if (req.headers.authorization) {
-        token = req.headers.authorization.split(" ")[1] || "";
+        // Attempt to split the Authorization header
+        const authHeaderParts = req.headers.authorization.split(" ");
+        console.log("Authorization header parts:", authHeaderParts);
+
+        // Ensure that the token part exists and is not empty
+        token = authHeaderParts[1] || "";
       } else {
-        return res
-          .status(401)
-          .json({ message: "Unauthorized - No Authorization Token" });
+        return res.json({ message: "Unauthorized - No Authorization Token" });
       }
 
+      
+      console.log(`This is the ${token}`);
+
       // Try to retrieve a user with the token or access it from passport's session state
-      const user = await getUser(token) || req.user;
-      console.log(user?.first_name) ;
+      const user = await getUser(token);
+      console.log(user?.first_name);
 
       // optionally block the user
       // we could also check user roles/permissions here

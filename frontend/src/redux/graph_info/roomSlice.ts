@@ -38,5 +38,5 @@ const roomSlice = createSlice({
 });
 
 export const { setData, setLoading, setError } = roomSlice.actions;
-export const selectRooms = (state: { rooms: RoomState }) => state.rooms;
+export const selectedRooms = (state: { rooms: RoomState }) => state.rooms;
 export default roomSlice.reducer;

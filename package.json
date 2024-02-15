@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "compile": "tsc",
-    "start_backend": "npm run compile && nodemon ./dist/index.js",
+    "start_backend": "npm run compile && nodemon --inspect ./dist/index.js",
     "start_frontend": "cd frontend && npm run dev",
     "start_both": "concurrently \"npm run start_backend\" \"npm run start_frontend\"",
     "test":"mocha 'test/**/*.js'",
