@@ -6,30 +6,83 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider as Provider,
-  createHttpLink,
+  HttpLink,
+  from,
 } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
 import { FC, PropsWithChildren } from "react";
+import { setCredentials } from "@/redux/auth/authSlice";
 
-const httpLink = createHttpLink({
+const httpLink = new HttpLink({
   uri: URI,
-  credentials: 'include'
+  credentials: "include",
 });
 
-const authLink = setContext((_, { headers }) => {
-  const token = store.getState().auth.token;
-  console.log(`This is the ${token}`);
-  // return the headers to the context so httpLink can read them
+async function getRefreshToken() {
+  console.log(store.getState().auth.token);
+  try {
+    const response = await fetch("users/refresh", {
+      method: "GET",
+      credentials: "include",
+    });
+    const { accessToken } = await response.json();
+    store.dispatch(setCredentials({ accessToken })); // Implement this function to set the token in local storage or Redux store
+    console.log("Token refreshed successfully.");
+    console.log(accessToken);
+    console.log(store.getState().auth.token);
+    return accessToken;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+const authLink = setContext(async (_, { headers }) => {
+  let token = store.getState()?.auth?.token;
+
+  // If token is null, attempt to refresh it
+  if (!token) {
+    try {
+      const refreshToken = await getRefreshToken();
+      token = refreshToken;
+    } catch (err) {
+      console.error("Failed to refresh access token:", err);
+    }
+  }
   return {
     headers: {
       ...headers,
       authorization: token ? `Bearer ${token}` : "",
-    },
-  };
+    }
+  }
 });
 
 
+const errorLink = onError(({ graphQLErrors, operation, forward }) => {
+  const oldHeaders = operation.getContext().headers;
+  console.log(oldHeaders);
+  if (graphQLErrors) {
+    for (const err of graphQLErrors) {
+      switch (err.extensions.code) {
+        case "UNAUTHENTICATED":
+          operation.setContext(async ({ headers = {} }) => {
+            const token = await getRefreshToken();
+            return {
+              headers: {
+                ...headers,
+                authorization: token ? `Bearer ${token}` : "",
+              },
+            };
+          });
+      }
+    }
+    return forward(operation);
+  }
+
+  return forward(operation);
+});
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: from([authLink, errorLink, httpLink]),
   cache: new InMemoryCache(),
 });
 

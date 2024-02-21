@@ -9,7 +9,7 @@
     "start_backend": "npm run compile && nodemon --inspect ./dist/index.js",
     "start_frontend": "cd frontend && npm run dev",
     "start_both": "concurrently \"npm run start_backend\" \"npm run start_frontend\"",
-    "test":"mocha 'test/**/*.js'",
+    "test": "mocha 'test/**/*.js'",
     "dev": "concurrently \"npm run start_backend\" \"cd frontend && npm run dev\"",
     "lint": "eslint . --ext .ts"
   },
@@ -34,6 +34,7 @@
     "@types/bcryptjs": "^2.4.3",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/passport-google-oauth20": "^2.0.14",
+    "axios": "^1.6.7",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "connect-mongo": "^5.1.0",

@@ -107,7 +107,7 @@ const loginUser = async (req: Request, res: Response) => {
 const refresh = (req: Request, res: Response) => {
   const cookies = req.cookies;
 
-  if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized" });
+  if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized access" });
 
   const refreshToken = cookies.jwt;
 
@@ -115,7 +115,10 @@ const refresh = (req: Request, res: Response) => {
     refreshToken,
     process.env.JWT_REFRESH_SECRET,
     async (err: any, decoded: any) => {
-      if (err) return res.status(403).json({ message: "Forbidden" });
+      if (err) {
+        console.log(err);
+        return res.status(403).json({ message: "Forbidden" });
+      }
 
       const foundUser = await User.findById(decoded.id);
 
@@ -139,15 +142,7 @@ const getMe = (req: Request, res: Response) => {
 // @route   POST /api/users/logout
 // @access  Public
 const logoutUser = (req: Request, res: Response) => {
-  /*
-  if (req.user) {
-    req.logOut;
-    res
-      .status(200)
-      .json({ message: "Logged Out From Google Authentication Successfully" });
-  } 
-  */
-
+  
   if ( !req.cookies?.jwt ) return res.sendStatus(204);
   res.clearCookie('jwt', { httpOnly: true, sameSite: 'strict', secure: true })
   res.json({ message: "Cookie cleared Succesfully"});

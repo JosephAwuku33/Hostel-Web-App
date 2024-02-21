@@ -9,6 +9,7 @@ export function FullTable() {
   const { loading, error, data } = useQuery(GET_ROOMS);
   console.log(data?.rooms);
 
+
   const overrideProps = {};
 
   if (loading) {

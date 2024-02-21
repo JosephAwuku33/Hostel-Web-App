@@ -13,6 +13,8 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import axios from "axios";
 
 const API_PORT = process.env.API_PORT || 4000;
 const LOCALHOST = process.env.CLIENT_URL;
@@ -35,6 +37,8 @@ const server = new ApolloServer<MyContext>({
 
 await server.start();
 connectDB();
+
+app.use(cookieParser());
 
 app.use(
   "/users",
@@ -69,27 +73,23 @@ app.use(
       console.log(`This is the ${token}`);
 
       // Try to retrieve a user with the token or access it from passport's session state
-      const user = await getUser(token);
+      const user = await getUser(token, process.env.JWT_ACCESS_SECRET);
       console.log(user?.first_name);
 
       // optionally block the user
       // we could also check user roles/permissions here
-
+      
       if (!user) {
-        // throwing a `GraphQLError` here allows us to specify an HTTP status code,
-        // standard `Error`s will have a 500 status code by default
-
-        return new GraphQLError("User is not authenticated", {
+        throw new GraphQLError("User is not authenticated", {
           extensions: {
             code: "UNAUTHENTICATED",
             http: { status: 401 },
           },
         });
-      } else {
-        // Add the user to the context
-        console.log(user);
-        return { user };
       }
+
+      // Add authenticated user to the GraphQL context
+      return { user };
     },
   })
 );
