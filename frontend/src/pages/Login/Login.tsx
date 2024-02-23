@@ -52,8 +52,8 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const { accessToken } = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ accessToken }));
+      const { accessToken, first_name, last_name } = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ accessToken, first_name, last_name }));
       setEmail("");
       setPassword("");
       navigate("/dashboard");

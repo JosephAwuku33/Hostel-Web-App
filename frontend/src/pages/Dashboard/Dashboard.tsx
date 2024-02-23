@@ -23,7 +23,7 @@ export default function Dashboard() {
       </div>
 
       {/**Overview Card */}
-      <Card className="bg-primary-white w-7/8 h-1/5 m-5">
+      <Card className=" bg-primary-white w-7/8 h-1/5 m-5">
         <CardHeader>
           <CardTitle>
             <Label className="text-md font-bold ">Overview</Label>

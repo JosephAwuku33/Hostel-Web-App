@@ -85,13 +85,10 @@ const loginUser = async (req: Request, res: Response) => {
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
       res.json({
-        /*
-        _id: user._id,
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
-        */
-        accessToken,
+        accessToken
       });
     } else {
       res.status(400).send("Invalid Credentials");

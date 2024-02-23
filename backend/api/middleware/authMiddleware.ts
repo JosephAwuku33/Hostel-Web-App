@@ -13,7 +13,7 @@ export const protect = async (
 
   if (token) {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET) as {
+      const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET) as {
         id: string;
       };
 

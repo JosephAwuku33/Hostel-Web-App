@@ -25,6 +25,8 @@ export interface UserInfo {
   token?: string | null,
   googleUser? : GoogleUser | null
   isAuthenticated : boolean
+  first_name: string | null;
+  last_name: string | null;
 }
 
 interface GoogleUser {

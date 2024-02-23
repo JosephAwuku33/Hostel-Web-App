@@ -1,11 +1,17 @@
 import { Input } from "@/components/ui/input";
 import search from "../assets/images/search.png";
 import bell from "../assets/images/bell.png";
-import profile from "../assets/images/Joseph.jpg";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { AvatarImage } from "@radix-ui/react-avatar";
+import Avatar from "react-avatar";
+import { useAppSelector } from "@/redux/hooks";
 
 export default function Header() {
+  const firstName = useAppSelector((state) => state.auth.first_name);
+  const lastName = useAppSelector((state) => state.auth.last_name);
+
+  const fullName = `${firstName} ${lastName}`
+  console.log(fullName);
+
+
   return (
     <header className="flex flex-row relative p-3 w-full h-10 top-0 bg-primary-white">
       <div className="relative w-3/5">
@@ -28,10 +34,12 @@ export default function Header() {
         <div className="rounded-full bg-slate-100 p-3">
           <img src={bell} width={20} height={20} alt="bell" />
         </div>
-        <Avatar>
-          <AvatarImage src={profile} height={35} width={35} />
-          <AvatarFallback>J</AvatarFallback>
-        </Avatar>
+        <Avatar
+          round={true}
+          textSizeRatio={1.5}
+          size="40px"
+          name={fullName}
+        />
       </div>
     </header>
   );

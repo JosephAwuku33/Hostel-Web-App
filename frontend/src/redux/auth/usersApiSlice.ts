@@ -10,17 +10,20 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...data },
       }),
-      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          console.log("Show me the queryFufilled data");
-          console.log(data.accessToken);
-          const { accessToken } = data;
-          dispatch(setCredentials({ accessToken }));
-        } catch (err) {
-          console.log(err);
-        }
-      },
+      // async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+      //   try {
+      //     const { data } = await queryFulfilled;
+      //     console.log("Show me the queryFufilled data");
+      //     console.log(data.accessToken);
+      //     console.log(data.first_name);
+      //     console.log(data.last_name);
+      //     const { accessToken, first_name, last_name } = data;
+      //     dispatch(setCredentials({ accessToken, first_name, last_name }));
+
+      //   } catch (err) {
+      //     console.log(err);
+      //   }
+      // },
     }),
     logout: builder.mutation({
       query: () => ({
