@@ -14,7 +14,6 @@ import http from "http";
 import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-import axios from "axios";
 
 const API_PORT = process.env.API_PORT || 4000;
 const LOCALHOST = process.env.CLIENT_URL;

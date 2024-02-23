@@ -43,12 +43,13 @@ const registerUser = async (req: Request, res: Response) => {
     });
 
     if (user) {
-      generateToken(res, user._id);
+      const accessToken = generateToken(res, user._id);
       res.status(201).json({
         _id: user._id,
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
+        accessToken
       });
     } else {
       res.status(400);
