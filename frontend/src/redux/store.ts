@@ -1,4 +1,4 @@
-import {  configureStore } from "@reduxjs/toolkit";
+import {   configureStore } from "@reduxjs/toolkit";
 import authReducer from "./auth/authSlice.ts";
 import roomReducer from "./graph_info/roomSlice.ts";
 import { apiSlice } from "./auth/apiSlice.ts";

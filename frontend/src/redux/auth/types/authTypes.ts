@@ -23,15 +23,7 @@ export interface ApiResponse {
 
 export interface UserInfo {
   token?: string | null,
-  googleUser? : GoogleUser | null
   isAuthenticated : boolean
   first_name: string | null;
   last_name: string | null;
-}
-
-interface GoogleUser {
-   _id: string,
-   first_name: string, 
-   last_name: string,
-   email: string
 }

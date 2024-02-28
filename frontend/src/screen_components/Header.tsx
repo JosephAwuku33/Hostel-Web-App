@@ -7,10 +7,19 @@ import { useAppSelector } from "@/redux/hooks";
 export default function Header() {
   const firstName = useAppSelector((state) => state.auth.first_name);
   const lastName = useAppSelector((state) => state.auth.last_name);
+  let storedFullName = "";
 
-  const fullName = `${firstName} ${lastName}`
-  console.log(fullName);
-
+   // Check if firstName is undefined
+   if (!firstName && !lastName) {
+    const storedFirstName = localStorage.getItem("first_name");
+    const storedLastName = localStorage.getItem("last_name");
+    if (storedFirstName && storedLastName) {
+      storedFullName = `${storedFirstName} ${storedLastName}`;
+    }
+  } else {
+    storedFullName = `${firstName} ${lastName};`
+  }
+  
 
   return (
     <header className="flex flex-row relative p-3 w-full h-10 top-0 bg-primary-white">
@@ -38,7 +47,7 @@ export default function Header() {
           round={true}
           textSizeRatio={1.5}
           size="40px"
-          name={fullName}
+          name={storedFullName}
         />
       </div>
     </header>

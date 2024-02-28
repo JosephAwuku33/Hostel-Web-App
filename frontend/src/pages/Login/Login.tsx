@@ -16,22 +16,7 @@ export default function Login() {
   const [login, { isLoading }] = useLoginMutation();
   const isAuth = useAppSelector((state) => state.auth.isAuthenticated);
 
-  //const [ successGoogleLogin] = useSuccessGoogleLoginMutation();
-
-  /*
-  useEffect(() => {
-    const getUser = async () => {
-       try {
-        const { user } = await successGoogleLogin({}).unwrap();
-        dispatch(setGoogleCredentials({ user }));
-       } catch (err){
-        console.log(err);
-       }
-    }
-
-    getUser();
-  }, [successGoogleLogin, dispatch]);
-  */
+  
   useEffect(() => {
     if ( !isAuth ){
       navigate("/");
@@ -56,6 +41,9 @@ export default function Login() {
       dispatch(setCredentials({ accessToken, first_name, last_name }));
       setEmail("");
       setPassword("");
+      localStorage.setItem("first_name", first_name); // Save first name to local storage
+      localStorage.setItem("last_name", last_name); // Save last name to local storage
+      localStorage.setItem("isLoggedIn", "true");
       navigate("/dashboard");
     } catch (err) {
       toast.error(err as string);
@@ -63,15 +51,6 @@ export default function Login() {
     }
   };
 
-  
-  /*
-  const handleGoogleSignIn = async () => {
-    setEmail("");
-    setPassword("");
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    window.open("http://localhost:4000/users/google", "_self");
-  };
-  */
   
   const overrideProps = {
     display: "block",

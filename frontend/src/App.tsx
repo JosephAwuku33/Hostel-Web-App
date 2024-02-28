@@ -12,15 +12,16 @@ import DealPage from "./pages/Deal/Deal";
 import RatePage from "./pages/Rate/RatePage";
 import { useAppSelector } from "./redux/hooks";
 
-
 function App() {
   const isLoggedIn = useAppSelector((state) => state.auth.isAuthenticated);
-  
 
   return (
     <div className="font-primary">
       <Routes>
-        <Route index element={isLoggedIn ? <Home component={Dashboard} /> : <Login/> } />
+        <Route
+          index
+          element={isLoggedIn ? <Home component={Dashboard} /> : <Login />}
+        />
         <Route path="/dashboard" element={<Home component={Dashboard} />} />
         <Route
           path="/front-desk"

@@ -45,11 +45,6 @@ export default function SignUp() {
     }));
   };
 
-  /*
-  const handleGoogleSignIn = async () => {
-    window.open("http://localhost:4000/users/google", "_self");
-  }
-  */
 
   const onSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -59,13 +54,16 @@ export default function SignUp() {
       return;
     } else {
       try {
-        const res = await register({
+        const { accessToken } = await register({
           first_name,
           last_name,
           email,
           password,
         }).unwrap();
-        dispatch(setCredentials({ ...res }));
+        dispatch(setCredentials({ accessToken, first_name, last_name }));
+        localStorage.setItem("first_name", first_name); // Save first name to local storage
+        localStorage.setItem("last_name", last_name); // Save last name to local storage
+        localStorage.setItem("isLoggedIn", "true");
         navigate("/dashboard");
       } catch (err: unknown) {
         toast.error(err as string);
