@@ -1,3 +1,8 @@
+/** Apollo Client Configuration
+ * Custom object links that authorize, check for the presence of a token and enables
+ * an allowed user to make calls to the graphql api
+ */
+
 import { URI } from "@/config/configs";
 import { store } from "@/redux/store";
 import { setContext } from "@apollo/client/link/context";

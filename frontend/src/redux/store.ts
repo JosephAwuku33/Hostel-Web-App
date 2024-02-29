@@ -1,8 +1,8 @@
-import {   configureStore } from "@reduxjs/toolkit";
+/**store configuration for redux environment */
+import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./auth/authSlice.ts";
 import roomReducer from "./graph_info/roomSlice.ts";
 import { apiSlice } from "./auth/apiSlice.ts";
-
 
 export const store = configureStore({
   reducer: {
@@ -11,9 +11,7 @@ export const store = configureStore({
     rooms: roomReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
-      apiSlice.middleware
-    ),
+    getDefaultMiddleware().concat(apiSlice.middleware),
   devTools: true,
 });
 

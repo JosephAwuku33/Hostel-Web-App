@@ -1,3 +1,5 @@
+/**redux authentication slice for keeping track of authentication state info
+ */
 import { createSlice } from "@reduxjs/toolkit";
 import { UserInfo } from "./types/authTypes";
 
@@ -24,8 +26,8 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       localStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("first_name"); // Remove first name from local storage
-      localStorage.removeItem("last_name"); // Remove last name from local storage
+      localStorage.removeItem("first_name"); 
+      localStorage.removeItem("last_name"); 
     },
   },
 });

@@ -43,7 +43,20 @@ const registerUser = async (req: Request, res: Response) => {
     });
 
     if (user) {
+      // Generate a new access token and send the response
       const accessToken = generateToken(res, user._id);
+
+      // Generate a new refresh token
+      const refresh_token = refreshToken(res, user._id);
+      
+       // Set the new token in the response
+       res.cookie("jwt", refresh_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+
       res.status(201).json({
         _id: user._id,
         first_name: user.first_name,
@@ -69,7 +82,7 @@ const loginUser = async (req: Request, res: Response) => {
     const user = await User.findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password!))) {
-      //console.log(`This is the existing Token ${existingToken}`);
+     
 
       // Generate a new access token and send the response
       const accessToken = generateToken(res, user._id);

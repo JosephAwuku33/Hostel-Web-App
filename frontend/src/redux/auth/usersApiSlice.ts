@@ -1,5 +1,5 @@
+/**RTK query wrapper for add specified endpoints to the the created authentication api Slice */
 import { apiSlice } from "./apiSlice";
-// import { setCredentials } from "./authSlice";
 const USERS_URL = "/users";
 
 export const userApiSlice = apiSlice.injectEndpoints({
@@ -35,17 +35,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: {...data},
       }),
-
-      // async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-      //   try {
-      //     const { data } = await queryFulfilled;
-      //     console.log(data);
-      //     const { accessToken } = data;
-      //     dispatch(setCredentials({ accessToken }));
-      //   } catch (err) {
-      //     console.log(err);
-      //   }
-      // },
     }),
   }),
 });

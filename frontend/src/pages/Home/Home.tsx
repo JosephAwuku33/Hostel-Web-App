@@ -12,22 +12,12 @@ const Home: FC<HomeLayoutProps> = ({ component: Component, ...props }) => {
   const navigate = useNavigate();
 
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  const firstName = useAppSelector((state) => state.auth.first_name);
-
+  
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/");
     }
-    // Check if firstName is undefined
-    if (!firstName) {
-      const storedFirstName = localStorage.getItem("first_name");
-      if (storedFirstName) {
-        console.log(`First name from localStorage: ${storedFirstName}`);
-      }
-    } else {
-      console.log(`First name from Redux state: ${firstName}`);
-    }
-  }, [isAuthenticated, navigate, firstName]);
+  }, [isAuthenticated, navigate]);
 
   return (
     <main className="flex min-h-screen">
