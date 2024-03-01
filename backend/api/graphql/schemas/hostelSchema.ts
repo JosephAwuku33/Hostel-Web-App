@@ -9,6 +9,14 @@ export const typeDefs = `#graphql
     gender_type: String
   }
 
+  type RoomCount {
+    count: Int!
+  }
+
+  type OccupantCount {
+    totalCount: Int!
+  }
+
   type Booking {
     id: ID!
     user: ID
@@ -24,6 +32,8 @@ export const typeDefs = `#graphql
     rooms:[Room]
     room(id: ID): Room
     booking(id: ID): Booking
+    roomCount: RoomCount
+    totalOccupants: OccupantCount
     # Define more queries here
   }
 

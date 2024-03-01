@@ -87,7 +87,7 @@ const loginUser = async (req: Request, res: Response) => {
       // Generate a new access token and send the response
       const accessToken = generateToken(res, user._id);
 
-      // Generate a new refresh token
+      // Generate a new refresh token that will be attached to cookie
       const refresh_token = refreshToken(res, user._id);
 
       // Set the new token in the response

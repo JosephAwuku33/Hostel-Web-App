@@ -13,3 +13,11 @@ query Getrooms {
 }
 `;
 
+export const GET_ROOM_COUNT = gql`
+query getRoomCount {
+  roomCount {
+    count
+  }
+}
+`
+

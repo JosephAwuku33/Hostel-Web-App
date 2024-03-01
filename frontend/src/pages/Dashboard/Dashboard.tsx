@@ -3,8 +3,16 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/utils/getDate";
 import { Card, CardTitle, CardContent, CardHeader } from "@/components/ui/card";
+import { GET_ROOM_COUNT } from "@/graphql/query";
+import { useQuery } from "@apollo/client";
+import Spinner from "@/screen_components/Spinner";
+
 
 export default function Dashboard() {
+  const { loading , data } = useQuery(GET_ROOM_COUNT, {pollInterval: 500 });
+  console.log(data?.roomCount);
+  const overrideProps = {};
+
   const currentDate = formatDate(new Date());
   return (
     <main className="flex flex-col h-screen bg-primary-grey">
@@ -40,7 +48,7 @@ export default function Dashboard() {
             <Label>
               Available rooms
               <Label className="md:ml-1 text-primary-blue font-extrabold text-xl">
-                23
+                {loading ? <Spinner loading={loading} override={overrideProps} size={12}/> : data?.roomCount?.count}
               </Label>
             </Label>
             <Label className="md:mr-12">

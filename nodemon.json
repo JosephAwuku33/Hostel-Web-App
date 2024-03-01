@@ -1,0 +1,6 @@
+{
+    "watch": ["backend"],
+    "ignore":["frontend"],
+    "ext": ".ts, .js",
+    "exec": "npx tsc && npx tsx ./backend/index.ts"
+  }

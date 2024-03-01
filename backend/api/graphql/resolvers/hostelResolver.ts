@@ -3,23 +3,27 @@ import Booking from "../../data/models/Booking.js";
 import { GraphQLError } from "graphql";
 import { MyContext } from "../../../types/context.js";
 
-
 export const resolvers = {
   Query: {
     // query for returning rooms available
     rooms: async (_: any, __: any, contextValue: MyContext) => {
       console.log(contextValue.user);
       if (!contextValue.user) {
-        return new GraphQLError("Not authenticated to be making room requests", {
-          extensions: {
-            code: "UNAUTHENTICATED",
-            http: { status: 401 },
-          },
-        });
+        return new GraphQLError(
+          "Not authenticated to be making room requests",
+          {
+            extensions: {
+              code: "UNAUTHENTICATED",
+              http: { status: 401 },
+            },
+          }
+        );
       }
 
       try {
-        const rooms = await Rooms.find({ status: "available" });
+        const rooms = await Rooms.find({ status: "available" }).sort({
+          number: 1,
+        });
         const roomsArray = [...rooms];
 
         return roomsArray;
@@ -28,14 +32,18 @@ export const resolvers = {
       }
     },
 
+    // query for returning a single room given its id
     room: async (_: any, args: any, contextValue: MyContext) => {
       if (!contextValue.user) {
-        return new GraphQLError("Not authenticated to be making room requests", {
-          extensions: {
-            code: "UNAUTHENTICATED",
-            http: { status: 401 },
-          },
-        });
+        return new GraphQLError(
+          "Not authenticated to be making room requests",
+          {
+            extensions: {
+              code: "UNAUTHENTICATED",
+              http: { status: 401 },
+            },
+          }
+        );
       }
 
       const { id } = args;
@@ -48,18 +56,85 @@ export const resolvers = {
         throw new Error("Room not found");
       }
     },
-  },
 
+    // query for returning the number of available rooms
+    roomCount: async (_: any, __: any, contextValue: MyContext) => {
+      if (!contextValue.user) {
+        return new GraphQLError(
+          "Not authenticated to be making room requests regarding its count",
+          {
+            extensions: {
+              code: "UNAUTHENTICATED",
+              http: { status: 401 },
+            },
+          }
+        );
+      }
+
+      try {
+        const count = await Rooms.countDocuments({ status: "available" });
+        return { count };
+      } catch (err) {
+        throw new Error("Couldn't return the count of rooms");
+        console.log(err);
+      }
+    },
+
+    // query for returning the total number, i.e the total number of beds currently available in the hostel
+    totalOccupants: async (_: any, __: any, contextValue: MyContext) => {
+      if (!contextValue.user) {
+        return new GraphQLError(
+          "Not authenticated to be making room requests regarding its count of beds",
+          {
+            extensions: {
+              code: "UNAUTHENTICATED",
+              http: { status: 401 },
+            },
+          }
+        );
+      }
+
+      try {
+        const totalOccupantsBedLeftAggregate = await Rooms.aggregate([
+          {
+            $match: { status: "available" },
+          },
+          {
+            $group: {
+              _id: null,
+              total: { $sum: "$occupants" },
+            },
+          },
+        ]);
+        if (totalOccupantsBedLeftAggregate.length === 0) {
+          // Handle the case where there are no documents matching the criteria
+          return { totalCount: 0 }; // Return a default value
+        }
+    
+        const totalCount = totalOccupantsBedLeftAggregate[0].total;
+    
+        console.log("Total Beds Left:", totalCount);
+    
+        return { totalCount };
+      } catch (err) {
+        console.log(err);
+        throw new Error("There was a problem with your request");
+      }
+    },
+  },
   Mutation: {
     // mutation to add a new booking
     addBooking: async (_: any, args: any, contextValue: MyContext) => {
       if (!contextValue.user) {
-        return new GraphQLError("Not authenticated to be making booking requests", {
-          extensions: {
-            code: "UNAUTHENTICATED",
-            http: { status: 401 },
-          },
-        });
+        return new GraphQLError(
+          "Not authenticated to be making booking requests",
+          {
+            extensions: {
+              code: "UNAUTHENTICATED",
+              http: { status: 401 },
+            },
+          }
+        );
       }
       const {
         room,
